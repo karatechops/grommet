@@ -2,7 +2,7 @@
 
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-
+import Props from '../utils/Props';
 import Responsive from '../utils/Responsive';
 import Legend from './Legend';
 import Bar from './meter/Bar';
@@ -405,9 +405,11 @@ export default class Meter extends Component {
       classes.push(this.props.className);
     }
 
+    const restProps = Props.omit(this.props, Object.keys(Meter.propTypes));
+
     let minMax = this._renderMinMax(classes);
     let activeValue;
-    if (this.state.series.length > 0) {
+    if (this.props.label && this.state.series.length > 0) {
       activeValue = this._renderActiveValue();
     }
     let legend;
@@ -454,7 +456,7 @@ export default class Meter extends Component {
     );
 
     const graphicContainer = (
-      <div className={`${CLASS_ROOT}__graphic-container`}>
+      <div {...restProps} className={`${CLASS_ROOT}__graphic-container`}>
         {graphic}
         {minMax}
       </div>
@@ -479,6 +481,7 @@ Meter.propTypes = {
   a11yDescId: PropTypes.string,
   a11yDesc: PropTypes.string,
   important: PropTypes.number,
+  label: PropTypes.bool,
   legend: PropTypes.oneOfType([
     PropTypes.bool,
     PropTypes.shape({
@@ -526,6 +529,7 @@ Meter.propTypes = {
 Meter.defaultProps = {
   a11yTitleId: 'meter-title',
   a11yDescId: 'meter-desc',
+  label: true,
   type: 'bar'
 };
 

@@ -132,9 +132,7 @@
           left: 50%;
           transform: translateX(-50%);
 
-          @include media-query(lap-and-up) {
-            @include animation('slide-down 0.2s ease-in-out forwards');
-          }
+          @include animation('slide-down 0.2s ease-in-out forwards');
         }
       }
     }
@@ -142,6 +140,12 @@
     &-bottom:not(.layer--hidden) {
       .layer__container {
         bottom: 0px;
+        left: 50%;
+        transform: translateX(-50%);
+
+        @include media-query(lap-and-up) {
+          @include animation('slide-up 0.2s ease-in-out forwards');
+        }
       }
     }
   }
@@ -228,5 +232,15 @@
 
   100% {
     top: 0px;
+  }
+}
+
+@include keyframes(slide-up) {
+  0% {
+    bottom: -100vh;
+  }
+
+  100% {
+    bottom: 0px;
   }
 }
