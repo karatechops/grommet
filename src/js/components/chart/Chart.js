@@ -93,6 +93,12 @@ export default class Chart extends Component {
           onMaxCount(maxCount);
         });
       }
+    } else if (base) {
+      const rect = base.getBoundingClientRect();
+      this.setState({
+        alignHeight: rect.height,
+        alignTop: rect.top - chartRect.top
+      });
     }
   }
 

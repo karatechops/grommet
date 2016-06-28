@@ -190,10 +190,34 @@
 
 .#{$grommet-namespace}chart--vertical {
   flex-direction: column;
+
+  &.#{$grommet-namespace}chart--full {
+    height: 100%;
+  }
+
+  > .#{$grommet-namespace}axis:first-child {
+    margin-bottom: halve($inuit-base-spacing-unit);
+  }
+
+  > .#{$grommet-namespace}axis:last-child {
+    margin-top: halve($inuit-base-spacing-unit);
+  }
 }
 
 .#{$grommet-namespace}chart:not(.#{$grommet-namespace}chart--vertical) {
   flex-direction: row;
+
+  &.#{$grommet-namespace}chart--full {
+    width: 100%;
+  }
+
+  > .#{$grommet-namespace}axis:first-child {
+    margin-right: halve($inuit-base-spacing-unit);
+  }
+
+  > .#{$grommet-namespace}axis:last-child {
+    margin-left: halve($inuit-base-spacing-unit);
+  }
 }
 
 // Base
@@ -389,6 +413,41 @@
   height: 100%;
 }
 
+// Layers
+
+.#{$grommet-namespace}layers {
+  position: absolute;
+}
+
+.#{$grommet-namespace}layers--height-small {
+  height: $graphic-small-size;
+}
+
+.#{$grommet-namespace}layers--height-medium {
+  height: $graphic-size;
+}
+
+.#{$grommet-namespace}layers--width-small {
+  width: $graphic-small-size;
+}
+
+.#{$grommet-namespace}layers--width-medium {
+  width: $graphic-size;
+}
+
+.#{$grommet-namespace}layers--width-full {
+  width: 100%;
+}
+
+.#{$grommet-namespace}threshold,
+.#{$grommet-namespace}grid,
+.#{$grommet-namespace}graph--line,
+.#{$grommet-namespace}graph--area {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
 // Stack
 
 .#{$grommet-namespace}chart-stack {
@@ -464,4 +523,8 @@
 .#{$grommet-namespace}chart-graph__point--active {
   stroke: $background-color;
   @include graph-fill-color();
+}
+
+.#{$grommet-namespace}graph__point {
+  fill: $background-color;
 }
