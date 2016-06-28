@@ -30,7 +30,6 @@ export default class Threshold extends Component {
   render () {
     const { value, max, min, vertical, colorIndex } = this.props;
     const { size: { height, width } } = this.state;
-    console.log('!!! Threshold render', height, width);
     let classes = ['threshold'];
     classes.push(`color-index-${colorIndex || 'graph-1'}`);
     let commands = '';
@@ -56,12 +55,10 @@ export default class Threshold extends Component {
 
 Threshold.propTypes = {
   colorIndex: PropTypes.string,
-  height: PropTypes.number,
   max: PropTypes.number.isRequired,
   min: PropTypes.number,
   value: PropTypes.number.isRequired,
-  vertical: PropTypes.bool,
-  width: PropTypes.number
+  vertical: PropTypes.bool
 };
 
 Threshold.defaultProps = {

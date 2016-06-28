@@ -20,6 +20,9 @@ export default class Value extends Component {
     if (this.props.colorIndex) {
       classes.push(`color-index-${this.props.colorIndex}`);
     }
+    if (this.props.active) {
+      classes.push(`${CLASS_ROOT}--active`);
+    }
     if (this.props.className) {
       classes.push(this.props.className);
     }
@@ -60,6 +63,7 @@ export default class Value extends Component {
 }
 
 Value.propTypes = {
+  active: PropTypes.bool,
   align: PropTypes.oneOf(['start', 'center', 'end']),
   colorIndex: PropTypes.string,
   icon: PropTypes.node,

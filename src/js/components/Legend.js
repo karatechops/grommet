@@ -89,7 +89,7 @@ export default class Legend extends Component {
         <li key={item.label || index} className={legendClasses.join(' ')}
           onClick={item.onClick}
           onMouseOver={this._onActive.bind(this, index)}
-          onMouseOut={this._onActive.bind(this, null)} >
+          onMouseOut={this._onActive.bind(this, undefined)} >
           {swatch}
           {label}
           {value}
@@ -100,7 +100,7 @@ export default class Legend extends Component {
     // build legend from bottom to top, to align with Meter bar stacking
     items.reverse();
 
-    var total = null;
+    var total;
     if (this.props.total && this.props.series.length > 1) {
       total = (
         <li className={CLASS_ROOT + "__total"}>

@@ -28,11 +28,14 @@ export default class Axis extends Component {
   }
 
   render () {
-    const { vertical, align, min, max, valueAlign, highlight,
+    const { vertical, reverse, align, min, max, valueAlign, highlight,
       values, ticks } = this.props;
     const { size: { height, width } } = this.state;
 
     let classes = ['axis'];
+    if (reverse) {
+      classes.push('axis--reverse');
+    }
     if (vertical) {
       classes.push('axis--vertical');
     }
@@ -46,7 +49,7 @@ export default class Axis extends Component {
       classes.push('axis--ticks');
     }
 
-    let style = {};
+    let style = {...this.props.style};
     if (height) {
       style.height = `${height}px`;
     }
@@ -55,6 +58,7 @@ export default class Axis extends Component {
     }
 
     let priorItemGraphValue, borrowedSpace;
+    let totalBasis = 0;
     let items = values.map((item, index) => {
 
       let classes = ['axis__slot'];
@@ -96,8 +100,15 @@ export default class Axis extends Component {
         delta = (itemGraphValue - priorItemGraphValue);
       }
       priorItemGraphValue = itemGraphValue;
-      style.flexBasis =
-        `${Math.round((delta / ((vertical ? height : width) || 1)) * 100)}%`;
+
+      let basis;
+      if (index > 0 && index === (values.length - 1)) {
+        basis = 100 - totalBasis;
+      } else {
+        basis = (delta / ((vertical ? height : width) || 1)) * 100;
+        totalBasis += basis;
+      }
+      style.flexBasis = `${basis}%`;
 
       return (
         <div key={index} className={classes.join(' ')} style={style}>
@@ -118,7 +129,7 @@ export default class Axis extends Component {
       );
     }
 
-    if (vertical) {
+    if (vertical && ! reverse) {
       items.reverse();
     }
 
@@ -138,6 +149,7 @@ Axis.propTypes = {
   highlight: PropTypes.number,
   max: PropTypes.number,
   min: PropTypes.number,
+  reverse: PropTypes.bool,
   ticks: PropTypes.bool,
   // alignment within each value. vertical: top|center|bottom, horizontal: left|center|right
   valueAlign: PropTypes.oneOf(['start', 'center', 'end']),

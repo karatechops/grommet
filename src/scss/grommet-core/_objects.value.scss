@@ -5,6 +5,10 @@
   @include text-align();
 }
 
+.value--active {
+  color: $hover-text-color;
+}
+
 .value__annotated {
   display: flex;
   flex-direction: row;

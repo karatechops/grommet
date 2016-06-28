@@ -10,10 +10,10 @@
   }
 }
 
-.chart {
-  position: relative;
-  display: block;
-}
+// .chart {
+//   position: relative;
+//   display: block;
+// }
 
 .chart__grid {
   stroke: $border-color;
@@ -186,33 +186,68 @@
 
 .chart--vertical {
   flex-direction: column;
+
+  &.chart--full {
+    height: 100%;
+  }
+
+  > .axis:first-child {
+    margin-bottom: halve($inuit-base-spacing-unit);
+  }
+
+  > .axis:last-child {
+    margin-top: halve($inuit-base-spacing-unit);
+  }
 }
 
 .chart:not(.chart--vertical) {
   flex-direction: row;
+
+  &.chart--full {
+    width: 100%;
+  }
+
+  > .axis:first-child {
+    margin-right: halve($inuit-base-spacing-unit);
+  }
+
+  > .axis:last-child {
+    margin-left: halve($inuit-base-spacing-unit);
+  }
 }
 
-// Layers
-
-.layers {
-  position: absolute;
+.base--width-small {
+  width: $graphic-small-size;
 }
 
-.layer {
-  position: absolute;
+.base--width-medium {
+  width: $graphic-size;
+}
+
+.base--width-large {
+  width: $graphic-large-size;
+}
+
+.base--width-full {
   width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: row;
 }
 
-.layer--vertical {
-  flex-direction: column;
+.base--height-small {
+  height: $graphic-small-size;
+}
+
+.base--height-medium {
+  height: $graphic-size;
+}
+
+.base--height-large {
+  height: $graphic-large-size;
 }
 
 // Axis
 
 .axis {
+  flex: 0 0 auto; // when in Chart
   display: flex;
   flex-direction: row;
 }
@@ -300,6 +335,10 @@
 .axis:not(.axis--vertical) {
   flex-direction: row;
 
+  .axis__slot {
+    min-height: $inuit-base-spacing-unit;
+  }
+
   &.axis--align-start {
     align-items: flex-start;
 
@@ -369,6 +408,41 @@
   }
 }
 
+// Layers
+
+.layers {
+  position: absolute;
+}
+
+.layers--height-small {
+  height: $graphic-small-size;
+}
+
+.layers--height-medium {
+  height: $graphic-size;
+}
+
+.layers--width-small {
+  width: $graphic-small-size;
+}
+
+.layers--width-medium {
+  width: $graphic-size;
+}
+
+.layers--width-full {
+  width: 100%;
+}
+
+.threshold,
+.grid,
+.graph--line,
+.graph--area {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
 // Stack
 
 .stack {
@@ -398,18 +472,21 @@
 // Threshold
 
 .threshold {
-  width: 100%;
-  height: 100%;
-  
   @include graph-stroke-color-translucent(0.7);
 }
 
 // Graph
 
 .graph--line {
+  stroke-width: 3px;
+
   @include graph-stroke-color-translucent(0.7);
 }
 
 .graph--area {
   @include graph-fill-color-translucent(0.7);
+}
+
+.graph__point {
+  fill: $background-color;
 }

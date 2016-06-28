@@ -69,7 +69,7 @@ export default {
     onClick, a11yDescId, a11yTitle, activeMeterSlice) {
     if (onActivate) {
       var onOver = onActivate.bind(null, itemIndex);
-      var onOut = onActivate.bind(null, null);
+      var onOut = onActivate.bind(null, undefined);
 
       let a11yRoles = {};
       let titleComponent;

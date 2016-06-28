@@ -8,16 +8,19 @@ export default class Chart extends Component {
 
   constructor () {
     super();
+    this._layout = this._layout.bind(this);
     this.state = {};
   }
 
   componentDidMount () {
-    this._layout();
+    setTimeout(this._layout, 1);
   }
 
   _layout () {
     const { horizontalAlignWith, verticalAlignWith } = this.props;
-    const chartRect = this.refs.chart.getBoundingClientRect();
+    const chart = this.refs.chart;
+    const chartRect = chart.getBoundingClientRect();
+    const base = this.refs.chart.querySelector('.base');
 
     if (horizontalAlignWith) {
       const elem = document.getElementById(horizontalAlignWith);
@@ -28,6 +31,12 @@ export default class Chart extends Component {
           alignLeft: rect.left - chartRect.left
         });
       }
+    } else if (base) {
+      const rect = base.getBoundingClientRect();
+      this.setState({
+        alignWidth: rect.width,
+        alignLeft: rect.left - chartRect.left
+      });
     }
 
     if (verticalAlignWith) {
@@ -39,24 +48,39 @@ export default class Chart extends Component {
           alignTop: rect.top - chartRect.top
         });
       }
+    } else if (base) {
+      const rect = base.getBoundingClientRect();
+      this.setState({
+        alignHeight: rect.height,
+        alignTop: rect.top - chartRect.top
+      });
     }
   }
 
   render () {
-    const { alignHeight, alignLeft, alignTop, alignWidth, vertical } = this.state;
+    const { vertical, full } = this.props;
+    const { alignHeight, alignLeft, alignTop, alignWidth } = this.state;
+    let classes = ['chart'];
+    if (vertical) {
+      classes.push('chart--vertical');
+    }
+    if (full) {
+      classes.push('chart--full');
+    }
 
     let children = Children.map(this.props.children, child => {
 
+      // name comparison is to work around webpack alias issues in development
       if (child.type === Axis || child.type.name === 'Axis') {
         if (vertical) {
           child = React.cloneElement(child, {
             width: alignWidth,
-            style: { paddingLeft: alignLeft }
+            style: { marginLeft: alignLeft }
           });
         } else {
           child = React.cloneElement(child, {
             height: alignHeight,
-            style: { paddingTop: alignTop }
+            style: { marginTop: alignTop }
           });
         }
 
@@ -64,7 +88,7 @@ export default class Chart extends Component {
         child = React.cloneElement(child, {
           height: alignHeight,
           width: alignWidth,
-          style: { paddingLeft: alignLeft, paddingTop: alignTop }
+          style: { left: alignLeft, top: alignTop }
         });
       }
 
@@ -72,7 +96,7 @@ export default class Chart extends Component {
     });
 
     return (
-      <div ref="chart" className="chart">
+      <div ref="chart" className={classes.join(' ')}>
         {children}
       </div>
     );
@@ -81,6 +105,7 @@ export default class Chart extends Component {
 };
 
 Chart.propTypes = {
+  full: PropTypes.bool,
   height: PropTypes.number,
   horizontalAlignWith: PropTypes.string,
   vertical: PropTypes.bool,

@@ -18,7 +18,6 @@ export class trackSize {
     const rect = this._element.getBoundingClientRect();
     this._size.width = this._width || Math.round(rect.width);
     this._size.height = this._height || Math.round(rect.height);
-    console.log('!!! trackSize _measure', this._element, rect.width, rect.height);
     this._onSize(this._size);
   }
 
@@ -35,8 +34,9 @@ export class trackSize {
   start (element) {
     this._element = element;
     if (! this._width || ! this._height) {
-      this._measure();
       window.addEventListener('resize', this._onResize);
+      // delay just a bit to allow the browser to lay things out
+      setTimeout(this._measure.bind(this), 3);
     }
   }
 

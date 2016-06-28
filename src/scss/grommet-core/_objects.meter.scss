@@ -38,7 +38,7 @@ $meter-active-offset: round($inuit-base-spacing-unit * 1.5);
 }
 
 .meter {
-  display: inline-block;
+  display: flex;
   position: relative;
 }
 
@@ -52,7 +52,7 @@ $meter-active-offset: round($inuit-base-spacing-unit * 1.5);
 
 .meter__value-container {
   position: relative;
-  display: inline-block;
+  display: flex;
   white-space: nowrap;
 }
 
@@ -170,7 +170,7 @@ $meter-active-offset: round($inuit-base-spacing-unit * 1.5);
 .meter:not(.meter--vertical) {
 
   .meter__graphic-container {
-    display: inline-block;
+    display: flex;
   }
 
   .meter__minmax-container {

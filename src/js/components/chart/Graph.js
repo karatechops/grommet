@@ -2,6 +2,8 @@
 
 import React, { Component, PropTypes } from 'react';
 
+const POINT_RADIUS = 6;
+
 export default class Graph extends Component {
 
   constructor (props) {
@@ -69,12 +71,29 @@ export default class Graph extends Component {
 
     // Get all coordinates up front so they are available
     // if we are drawing a smooth chart.
+    let points = [];
     const coordinates = series.map((value, index) => {
+      let coordinate;
       if (vertical) {
-        return [(value - min) * scale, height - (index * step)];
+        coordinate = [(value - min) * scale, height - (index * step)];
       } else {
-        return [index * step, height - ((value - min) * scale)];
+        coordinate = [index * step, height - ((value - min) * scale)];
       }
+
+      if (this.props.points && ! this.props.sparkline) {
+        let x = Math.max(POINT_RADIUS + 1,
+          Math.min(width - (POINT_RADIUS + 1), coordinate[0]));
+        let y = Math.max(POINT_RADIUS + 1,
+          Math.min(height - (POINT_RADIUS + 1), coordinate[1]));
+        points.push(
+          <circle key={index}
+            className={`graph__point color-index-${colorIndex}`}
+            cx={x} cy={y} r={POINT_RADIUS} />
+        );
+        coordinate = [x, y];
+      }
+
+      return coordinate;
     });
 
     // Build the commands for this set of coordinates.
@@ -82,10 +101,17 @@ export default class Graph extends Component {
 
     let pathProps = {};
     if ('area' === type) {
-      // Close the path by drawing down to the bottom
-      // and across to the bottom of where we started.
-      commands +=
-        `L${coordinates[coordinates.length - 1][0]},${height} L0,${height} Z`;
+      if (vertical) {
+        // Close the path by drawing to the left
+        // and across to the top of where we started.
+        commands +=
+          `L0,${coordinates[coordinates.length - 1][1]} L0,${height} Z`;
+      } else {
+        // Close the path by drawing down to the bottom
+        // and across to the bottom of where we started.
+        commands +=
+          `L${coordinates[coordinates.length - 1][0]},${height} L0,${height} Z`;
+      }
       pathProps.stroke = 'none';
     } else {
       pathProps.fill = 'none';
@@ -96,6 +122,7 @@ export default class Graph extends Component {
         viewBox={`0 0 ${width} ${height}`}
         preserveAspectRatio="none">
         <path {...pathProps} d={commands} />
+        {points}
       </svg>
     );
   }
@@ -108,6 +135,7 @@ Graph.propTypes = {
   highlight: PropTypes.number,
   max: PropTypes.number.isRequired,
   min: PropTypes.number.isRequired,
+  points: PropTypes.bool,
   series: PropTypes.arrayOf(PropTypes.number).isRequired,
   type: PropTypes.oneOf(['area', 'line']).isRequired,
   vertical: PropTypes.bool,

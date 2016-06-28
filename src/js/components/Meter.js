@@ -82,10 +82,13 @@ export default class Meter extends Component {
   }
 
   _onActivate (index) {
-    if (index === null) {
+    if (index === undefined) {
       index = this.state.importantIndex;
     }
     this.setState({initial: false, activeIndex: index});
+    if (this.props.onActive) {
+      this.props.onActive(index);
+    }
   }
 
   _onResize () {
@@ -120,7 +123,7 @@ export default class Meter extends Component {
       series = props.series;
     } else if (props.value || props.value === 0) {
       series = [
-        {value: props.value, important: true}
+        {value: props.value}
       ];
     }
 
@@ -187,10 +190,11 @@ export default class Meter extends Component {
   }
 
   _importantIndex (props, series) {
-    let result = null;
-    if (series.length === 1) {
-      result = 0;
-    }
+    let result = undefined;
+    // removed to ensure important is set solely based on props
+    // if (series.length === 1) {
+    //   result = 0;
+    // }
     if (props.hasOwnProperty('important')) {
       result = props.important;
     }
@@ -259,7 +263,8 @@ export default class Meter extends Component {
 
     let state = {
       importantIndex: importantIndex,
-      activeIndex: importantIndex,
+      // we should preserve activeIndex across property updates
+      // activeIndex: importantIndex,
       series: series,
       thresholds: thresholds,
       min: min,
@@ -278,7 +283,7 @@ export default class Meter extends Component {
 
   _getActiveFields () {
     let fields;
-    if (null === this.state.activeIndex) {
+    if (undefined === this.state.activeIndex) {
       fields = {
         value: this.state.total,
         label: Intl.getMessage(this.context.intl, 'Total')
@@ -383,7 +388,8 @@ export default class Meter extends Component {
     if (this.props.size) {
       let responsiveSize = this.props.size;
       // shrink Meter to medium size if large and up
-      if (this.state.limitMeterSize && (this.props.size === 'large' || this.props.size === 'xlarge')) {
+      if (this.state.limitMeterSize &&
+        (this.props.size === 'large' || this.props.size === 'xlarge')) {
         responsiveSize = 'medium';
       }
       classes.push(`${CLASS_ROOT}--${responsiveSize}`);
@@ -395,7 +401,7 @@ export default class Meter extends Component {
     } else {
       classes.push(`${CLASS_ROOT}--count-${this.state.series.length}`);
     }
-    if (this.state.activeIndex !== null) {
+    if (this.state.activeIndex !== undefined) {
       classes.push(`${CLASS_ROOT}--active`);
     }
     if (this.state.tallLegend) {
@@ -425,7 +431,7 @@ export default class Meter extends Component {
           // Hide value (displaying total), if legend is inline
           // and total is set to false
           if (!(this.props.legend.total)) {
-            activeValue = null;
+            activeValue = undefined;
           }
         }
         classes.push(`${CLASS_ROOT}--legend-${this.state.legendPlacement}`);
@@ -476,12 +482,12 @@ export default class Meter extends Component {
 }
 
 Meter.propTypes = {
+  activeIndex: PropTypes.number,
   a11yTitle: PropTypes.string,
   a11yTitleId: PropTypes.string,
   a11yDescId: PropTypes.string,
   a11yDesc: PropTypes.string,
   important: PropTypes.number,
-  label: PropTypes.bool,
   legend: PropTypes.oneOfType([
     PropTypes.bool,
     PropTypes.shape({
@@ -504,6 +510,7 @@ Meter.propTypes = {
     }),
     PropTypes.number
   ]),
+  onActive: PropTypes.func,
   size: PropTypes.oneOf(['small', 'medium', 'large', 'xlarge']),
   series: PropTypes.arrayOf(PropTypes.shape({
     label: PropTypes.string,
