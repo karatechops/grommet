@@ -307,10 +307,10 @@ $meter-active-offset: round($inuit-base-spacing-unit * 1.5);
 
 .meter--active {
 
-  .meter__values .meter__slice {
-    &:hover {
+  .meter__values .meter__slice--active {
+    // &:hover {
       stroke-width: $meter-slice-active-width;
-    }
+    // }
   }
 
   &:not(.meter--single) {

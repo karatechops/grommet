@@ -2,6 +2,7 @@
 
 import React, { Component, PropTypes } from 'react';
 import classnames from 'classnames';
+import Props from '../utils/Props';
 
 const CLASS_ROOT = 'label';
 
@@ -15,9 +16,10 @@ export default class Label extends Component {
         [`${CLASS_ROOT}--margin-${this.props.margin}`]: this.props.margin
       }
     );
+    const restProps = Props.omit(this.props, Object.keys(Label.propTypes));
 
     return (
-      <label className={classes} htmlFor={this.props.labelFor}>
+      <label {...restProps} className={classes} htmlFor={this.props.labelFor}>
         {this.props.children}
       </label>
     );

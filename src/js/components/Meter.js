@@ -272,6 +272,12 @@ export default class Meter extends Component {
       total: total
     };
 
+    if (props.hasOwnProperty('activeIndex')) {
+      state.activeIndex = props.activeIndex;
+    } else if (props.hasOwnProperty('active')) {
+      state.activeIndex = props.active ? 0 : undefined;
+    }
+
     // legend
     state.placeLegend = ! (props.legend && props.legend.placement);
     if (! state.placeLegend) {
@@ -482,7 +488,8 @@ export default class Meter extends Component {
 }
 
 Meter.propTypes = {
-  activeIndex: PropTypes.number,
+  active: PropTypes.bool, // when single value
+  activeIndex: PropTypes.number, // for series values
   a11yTitle: PropTypes.string,
   a11yTitleId: PropTypes.string,
   a11yDescId: PropTypes.string,

@@ -64,7 +64,6 @@ export default class Graphic extends Component {
         activeMeterSlice = 'activeMeterSlice';
         classes.push(`${CLASS_ROOT}__slice--active`);
       }
-
       if (item.onClick) {
         classes.push(CLASS_ROOT + "__slice--clickable");
       }

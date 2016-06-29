@@ -85,6 +85,13 @@
       stroke: rgba(nth($brand-accent-colors, $i), $opacity);
     }
   }
+
+  @for $i from 1 through length($brand-grey-colors) {
+    &.color-index-grey-#{$i},
+    &.color-index-grey-#{$i + length($brand-grey-colors)} {
+      stroke: rgba(nth($brand-grey-colors, $i), $opacity);
+    }
+  }
 }
 
 @mixin graph-fill-color {
