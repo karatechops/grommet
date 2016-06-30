@@ -94,7 +94,7 @@
       }
     }
   }
-
+  
   &-label {
     .#{$grommet-namespace}status-icon__base {
       fill: map-get($brand-status-colors, unknown);
@@ -137,6 +137,14 @@
 
     .#{$grommet-namespace}status-icon__detail {
       display: none;
+    }
+  }
+}
+
+@each $status, $color in $brand-status-colors {
+  .#{$grommet-namespace}status-icon-#{$status} {
+    .#{$grommet-namespace}status-icon__base {
+      fill: $color;
     }
   }
 }
