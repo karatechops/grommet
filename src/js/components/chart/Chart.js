@@ -3,6 +3,13 @@
 import React, { Component, Children, PropTypes } from 'react';
 import Axis from './Axis';
 import Layers from './Layers';
+import Stack from './Stack';
+import Base from './Base';
+import Grid from './Grid';
+import Area from './Area';
+import Line from './Line';
+import Threshold from './Threshold';
+import Marker from './Marker';
 
 export default class Chart extends Component {
 
@@ -112,3 +119,14 @@ Chart.propTypes = {
   verticalAlignWith: PropTypes.string,
   width: PropTypes.number
 };
+
+export { Axis, Layers, Stack, Base, Grid, Area, Line, Threshold, Marker };
+
+// export const Axis = Axis;
+// export const Layers = Layers;
+// export const Stack = Stack;
+// export const Base = Base;
+// export const Grid = Grid;
+// export const Area = Area;
+// export const Line = Line;
+// export const Threshold = Threshold;

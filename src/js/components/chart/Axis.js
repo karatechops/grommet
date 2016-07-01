@@ -28,8 +28,8 @@ export default class Axis extends Component {
   }
 
   render () {
-    const { vertical, reverse, align, min, max, valueAlign, highlight,
-      values, ticks } = this.props;
+    const { vertical, reverse, align, min, max, highlight,
+      values, count, ticks } = this.props;
     const { size: { height, width } } = this.state;
 
     let classes = ['axis'];
@@ -41,9 +41,6 @@ export default class Axis extends Component {
     }
     if (align) {
       classes.push(`axis--align-${align}`);
-    }
-    if (valueAlign) {
-      classes.push(`axis--value-align-${valueAlign}`);
     }
     if (ticks) {
       classes.push('axis--ticks');
@@ -57,9 +54,25 @@ export default class Axis extends Component {
       style.width = `${width}px`;
     }
 
-    let priorItemGraphValue, borrowedSpace;
+    let graphItems = [];
+    if (values) {
+      graphItems = values.map((item, index) => ({ ...item,
+        graphValue: graphValue(item.value, min, max, (vertical ? height : width))
+      }));
+    } else if (count) {
+      const delta = (max - min) / (count - 1);
+      for (let value=min; value<=max; value+=delta) {
+        graphItems.push({
+          value: value,
+          graphValue: graphValue(value, min, max, (vertical ? height : width))
+        });
+      }
+    }
+    const maxGraphValue = graphValue(max, min, max, (vertical ? height : width));
+
+    let priorItem, borrowedSpace;
     let totalBasis = 0;
-    let items = values.map((item, index) => {
+    let items = graphItems.map((item, index) => {
 
       let classes = ['axis__slot'];
       if (index === highlight) {
@@ -71,67 +84,63 @@ export default class Axis extends Component {
       if (item.colorIndex) {
         classes.push(`color-index-${item.colorIndex}`);
       }
-      let contents = item.label;
+      let label = item.label;
       if (typeof contents === 'string' || typeof contents === 'number') {
-        contents = <span>{contents}</span>;
+        label = <span>{label}</span>;
       }
 
-      const itemGraphValue =
-        graphValue(item.value, min, max, (vertical ? height : width));
-      let style = {};
       let delta;
-      if (undefined === priorItemGraphValue) {
+      if (0 === index) {
         // first value
         if (item.value <= min) {
-          if (index < (values.length - 1)) {
+          if (index < (graphItems.length - 1)) {
             // need to borrow some space from the next value
-            const nextItemGraphValue =
-              graphValue(values[index+1].value, min, max, (vertical ? height : width));
-            delta = (nextItemGraphValue - itemGraphValue) / 2;
+            delta = (graphItems[index+1].graphValue - item.graphValue) / 2;
             borrowedSpace = true;
+          } else {
+            // first and only value
+            delta = maxGraphValue;
           }
         } else {
-          delta = itemGraphValue;
+          delta = item.graphValue;
         }
       } else if (borrowedSpace) {
-        delta = (itemGraphValue - priorItemGraphValue) / 2;
+        delta = (item.graphValue - priorItem.graphValue) / 2;
         borrowedSpace = false;
       } else {
-        delta = (itemGraphValue - priorItemGraphValue);
+        delta = (item.graphValue - priorItem.graphValue);
       }
-      priorItemGraphValue = itemGraphValue;
+      priorItem = item;
 
       let basis;
-      if (index > 0 && index === (values.length - 1)) {
+      if (index > 0 && index === (graphItems.length - 1)) {
         basis = 100 - totalBasis;
+        totalBasis = 100;
       } else {
         basis = (delta / ((vertical ? height : width) || 1)) * 100;
         totalBasis += basis;
       }
-      style.flexBasis = `${basis}%`;
+      const style = { flexBasis: `${basis}%`};
 
       return (
-        <div key={index} className={classes.join(' ')} style={style}>
-          {contents}
+        <div key={item.value + index} className={classes.join(' ')} style={style}>
+          {label}
         </div>
       );
     });
 
-    const maxGraphValue = graphValue(max, min, max, (vertical ? height : width));
-    if (priorItemGraphValue < maxGraphValue) {
+    if (totalBasis < 100) {
       // fill remaining space
-      const delta = maxGraphValue - priorItemGraphValue;
-      const basis = `${Math.round((delta / ((vertical ? height : width) || 1)) * 100)}%`;
-      const style = { flexBasis: basis };
+      const style = { flexBasis: `${100 - totalBasis}%` };
       items.push(
         <div key={values.length}
           className="axis__slot axis__slot--placeholder" style={style} />
       );
     }
 
-    if (vertical && ! reverse) {
-      items.reverse();
-    }
+    // if (vertical && ! reverse) {
+    //   items.reverse();
+    // }
 
     return (
       <div ref="axis" className={classes.join(' ')} style={style}>
@@ -143,16 +152,14 @@ export default class Axis extends Component {
 };
 
 Axis.propTypes = {
-  // alignment across values. vertical: left|center|right, horizontal: top|center|bottom
-  align: PropTypes.oneOf(['start', 'center', 'end']),
+  align: PropTypes.oneOf(['start', 'end']),
+  count: PropTypes.number,
   height: PropTypes.number,
   highlight: PropTypes.number,
   max: PropTypes.number,
   min: PropTypes.number,
   reverse: PropTypes.bool,
   ticks: PropTypes.bool,
-  // alignment within each value. vertical: top|center|bottom, horizontal: left|center|right
-  valueAlign: PropTypes.oneOf(['start', 'center', 'end']),
   values: PropTypes.arrayOf(PropTypes.shape({
     colorIndex: PropTypes.string,
     label: PropTypes.node,

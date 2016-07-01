@@ -259,10 +259,15 @@
 }
 
 .axis--vertical {
-  flex-direction: column;
+  flex-direction: column-reverse;
 
   .axis__slot {
     min-width: 1em;
+    justify-content: flex-start;
+
+    &.axis__slot--zeroed {
+      justify-content: flex-end;
+    }
   }
 
   &.axis--align-start {
@@ -270,14 +275,6 @@
 
     .axis__slot {
       align-items: flex-start;
-    }
-  }
-
-  &.axis--align-center {
-    align-items: center;
-
-    .axis__slot {
-      align-items: center;
     }
   }
 
@@ -289,41 +286,34 @@
     }
   }
 
-  &.axis--value-align-start {
-    .axis__slot {
-      justify-content: flex-start;
-    }
+  &.axis--ticks {
+    .axis__slot:not(.axis__slot--placeholder) {
+      border-top: 1px solid $border-color;
 
-    &.axis--ticks {
-      .axis__slot:not(.axis__slot--placeholder) {
-        border-top: 1px solid $border-color;
-
-        &.axis__slot--zeroed {
-          justify-content: flex-end;
-          border-top: none;
-          border-bottom: 1px solid $border-color;
-        }
+      &.axis__slot--zeroed {
+        border-top: none;
+        border-bottom: 1px solid $border-color;
       }
     }
   }
 
-  &.axis--value-align-center {
-    .axis__slot {
-      justify-content: center;
-    }
-  }
+  &.axis--reverse {
+    flex-direction: column;
 
-  &.axis--value-align-end {
     .axis__slot {
       justify-content: flex-end;
+
+      &.axis__slot--zeroed {
+        justify-content: flex-start;
+      }
     }
 
     &.axis--ticks {
       .axis__slot:not(.axis__slot--placeholder) {
+        border-top: none;
         border-bottom: 1px solid $border-color;
 
         &.axis__slot--zeroed {
-          justify-content: flex-start;
           border-bottom: none;
           border-top: 1px solid $border-color;
         }
@@ -337,6 +327,11 @@
 
   .axis__slot {
     min-height: $inuit-base-spacing-unit;
+    align-items: flex-end;
+
+    &.axis__slot--zeroed {
+      align-items: flex-start;
+    }
   }
 
   &.axis--align-start {
@@ -344,14 +339,6 @@
 
     .axis__slot {
       justify-content: flex-start;
-    }
-  }
-
-  &.axis--align-center {
-    align-items: center;
-
-    .axis__slot {
-      justify-content: center;
     }
   }
 
@@ -363,46 +350,14 @@
     }
   }
 
-  &.axis--value-align-start {
-    .axis__slot {
-      align-items: flex-start;
-    }
+  &.axis--ticks {
+    .axis__slot:not(.axis__slot--placeholder) {
+      border-right: 1px solid $border-color;
+      padding: 0 quarter($inuit-base-spacing-unit);
 
-    &.axis--ticks {
-      .axis__slot:not(.axis__slot--placeholder) {
+      &.axis__slot--zeroed {
+        border-right: none;
         border-left: 1px solid $border-color;
-        padding: 0 quarter($inuit-base-spacing-unit);
-
-        &.axis__slot--zeroed {
-          align-items: flex-end;
-          border-left: none;
-          border-right: 1px solid $border-color;
-        }
-      }
-    }
-  }
-
-  &.axis--value-align-center {
-    .axis__slot {
-      align-items: center;
-    }
-  }
-
-  &.axis--value-align-end {
-    .axis__slot {
-      align-items: flex-end;
-    }
-
-    &.axis--ticks {
-      .axis__slot:not(.axis__slot--placeholder) {
-        border-right: 1px solid $border-color;
-        padding: 0 quarter($inuit-base-spacing-unit);
-
-        &.axis__slot--zeroed {
-          align-items: flex-start;
-          border-right: none;
-          border-left: 1px solid $border-color;
-        }
       }
     }
   }
@@ -437,7 +392,8 @@
 .threshold,
 .grid,
 .graph--line,
-.graph--area {
+.graph--area,
+.marker {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -459,6 +415,24 @@
   > * {
     flex: 0 0;
   }
+}
+
+// Marker
+
+.marker {
+  display: flex;
+
+  > * {
+    flex: 0 0;
+  }
+}
+
+.marker--vertical {
+  flex-direction: column;
+}
+
+.marker:not(.marker--vertical) {
+  flex-direction: row;
 }
 
 // Grid
@@ -489,4 +463,10 @@
 
 .graph__point {
   fill: $background-color;
+
+  transition: fill $base-animation-duration;
+}
+
+.graph__point--active {
+  @include graph-fill-color();
 }
