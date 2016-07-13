@@ -3,6 +3,8 @@
 import React, { Component, PropTypes } from 'react';
 import Props from '../../utils/Props';
 
+// Placeholder that reserves space on the screen for Layers to be positioned over.
+
 export default class Base extends Component {
 
   render () {

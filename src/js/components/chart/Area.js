@@ -5,5 +5,6 @@ import Graph from './Graph';
 export default class Area extends Graph {};
 
 Area.defaultProps = {
+  ...Graph.defaultProps,
   type: 'area'
 };

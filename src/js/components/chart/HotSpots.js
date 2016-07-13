@@ -3,7 +3,9 @@
 import React, { Component, PropTypes } from 'react';
 import { graphValue, trackSize } from './utils';
 
-export default class Marker extends Component {
+// Interactive regions.
+
+export default class HotSpots extends Component {
 
   constructor (props) {
     super(props);
@@ -12,7 +14,7 @@ export default class Marker extends Component {
   }
 
   componentDidMount () {
-    this._size.start(this.refs.marker);
+    this._size.start(this.refs.hotSpots);
   }
 
   componentWillReceiveProps (nextProps) {
@@ -28,22 +30,15 @@ export default class Marker extends Component {
   }
 
   render () {
-    const { count, values, max, min, vertical, colorIndex, onActive } = this.props;
+    const { count, values, max, min, vertical, colorIndex, activeIndex,
+      onActive } = this.props;
     const { size: { height, width } } = this.state;
 
-    let classes = ['marker'];
+    let classes = ['hot-spots'];
     if (vertical) {
-      classes.push('marker--vertical');
+      classes.push('hot-spots--vertical');
     }
     classes.push(`color-index-${colorIndex || 'grey-1'}`);
-
-    let style = {...this.props.style};
-    if (height) {
-      style.height = `${height}px`;
-    }
-    if (width) {
-      style.width = `${width}px`;
-    }
 
     let graphValues = [];
     if (values) {
@@ -60,7 +55,10 @@ export default class Marker extends Component {
     let priorEnd = graphValues[0];
     let totalBasis = 0;
     const items = graphValues.map((graphValue, index) => {
-      const classes = ['marker__band'];
+      const classes = ['hot-spots__band'];
+      if (index === activeIndex) {
+        classes.push('hot-spots__band--active');
+      }
       const start = priorEnd;
       let end;
       if (index >= (graphValues.length - 1)) {
@@ -93,7 +91,7 @@ export default class Marker extends Component {
     });
 
     return (
-      <div ref="marker" className={classes.join(' ')} style={style}>
+      <div ref="hotSpots" className={classes.join(' ')}>
         {items}
       </div>
     );
@@ -101,7 +99,7 @@ export default class Marker extends Component {
 
 };
 
-Marker.propTypes = {
+HotSpots.propTypes = {
   activeIndex: PropTypes.number,
   colorIndex: PropTypes.string,
   count: PropTypes.number,
@@ -112,6 +110,6 @@ Marker.propTypes = {
   vertical: PropTypes.bool
 };
 
-Marker.defaultProps = {
+HotSpots.defaultProps = {
   min: 0
 };

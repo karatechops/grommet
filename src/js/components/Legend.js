@@ -49,7 +49,9 @@ export default class Legend extends Component {
         legendClasses.push(CLASS_ROOT + "__item--clickable");
       }
       var colorIndex = this._itemColorIndex(item, index);
-      totalValue += item.value;
+      if (typeof item.value === 'number') {
+        totalValue += item.value;
+      }
 
       var valueClasses = [CLASS_ROOT + "__item-value"];
       if (1 === this.props.series.length) {
@@ -68,19 +70,34 @@ export default class Legend extends Component {
 
       var label;
       if (item.hasOwnProperty('label')) {
-        label = (
-          <span className={CLASS_ROOT + "__item-label"}>{item.label}</span>
-        );
+        if (swatch) {
+          label = (
+            <span className={CLASS_ROOT + "__item-label"}>
+              {swatch}
+              {item.label}
+            </span>
+          );
+        } else {
+          label = (
+            <span className={CLASS_ROOT + "__item-label"}>{item.label}</span>
+          );
+        }
       }
 
       var value;
       if (item.hasOwnProperty('value')) {
-        value = (
-          <span className={valueClasses.join(' ')}>
-            {item.value}
+        var units;
+        if (item.units || this.props.units) {
+          units = (
             <span className={CLASS_ROOT + "__item-units"}>
               {item.units || this.props.units}
             </span>
+          );
+        }
+        value = (
+          <span className={valueClasses.join(' ')}>
+            {item.value}
+            {units}
           </span>
         );
       }
@@ -90,7 +107,6 @@ export default class Legend extends Component {
           onClick={item.onClick}
           onMouseOver={this._onActive.bind(this, index)}
           onMouseOut={this._onActive.bind(this, undefined)} >
-          {swatch}
           {label}
           {value}
         </li>
@@ -130,7 +146,10 @@ Legend.propTypes = {
   onActive: PropTypes.func,
   series: PropTypes.arrayOf(PropTypes.shape({
     label: PropTypes.string,
-    value: PropTypes.number,
+    value: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.node
+    ]),
     units: PropTypes.string,
     colorIndex: PropTypes.oneOfType([
       PropTypes.number, // 1-6

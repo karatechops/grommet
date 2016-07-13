@@ -17,28 +17,32 @@
 .legend__total {
   color: $secondary-text-color;
 
-  > * {
-    vertical-align: top;
-  }
+  // > * {
+  //   vertical-align: top;
+  // }
 }
 
-.legend__item-label,
-.legend__total-label {
-  display: inline-block;
-  min-width: round($inuit-base-spacing-unit * 3);
-  text-align: left;
+.legend__item-label {
+  margin-right: halve($inuit-base-spacing-unit);
 }
 
-.legend__item-value,
-.legend__total-value {
-  display: inline-block;
-  width: round($inuit-base-spacing-unit * 3);
-  text-align: right;
+// .legend__item-label,
+// .legend__total-label {
+//   display: inline-block;
+//   min-width: round($inuit-base-spacing-unit * 3);
+//   text-align: left;
+// }
 
-  html.rtl & {
-    text-align: left;
-  }
-}
+// .legend__item-value,
+// .legend__total-value {
+//   display: inline-block;
+//   width: round($inuit-base-spacing-unit * 3);
+//   text-align: right;
+//
+//   html.rtl & {
+//     text-align: left;
+//   }
+// }
 
 .legend__item-units,
 .legend__total-units {
@@ -52,11 +56,15 @@
 }
 
 .legend__item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 
   svg.legend__item-swatch {
     width: halve($inuit-base-spacing-unit);
     height: halve($inuit-base-spacing-unit);
-    margin-top: quarter($inuit-base-spacing-unit);
+    // margin-top: quarter($inuit-base-spacing-unit);
     margin-right: halve($inuit-base-spacing-unit);
     overflow: visible;
 

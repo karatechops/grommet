@@ -1,13 +1,15 @@
 // (C) Copyright 2016 Hewlett Packard Enterprise Development LP
 
 import React, { Component, PropTypes } from 'react';
-import { graphValue, trackSize } from './utils';
+import { graphValue, trackSize, padding } from './utils';
+
+const DOUBLE_PADDING = 2 * padding;
 
 export default class Threshold extends Component {
 
   constructor (props) {
     super(props);
-    this.state = { size: {} };
+    this.state = { size: { width: 0, height: 0 } };
     this._size = new trackSize(props, this._onSize.bind(this));
   }
 
@@ -24,27 +26,37 @@ export default class Threshold extends Component {
   }
 
   _onSize (size) {
-    this.setState({ size: size });
+    this.setState({
+      size: size,
+      graphWidth: size.width - DOUBLE_PADDING,
+      graphHeight: size.height - DOUBLE_PADDING
+    });
   }
 
   render () {
-    const { value, max, min, vertical, colorIndex } = this.props;
-    const { size: { height, width } } = this.state;
+    const { value, max, min, vertical, reverse, colorIndex } = this.props;
+    const { size: { height, width }, graphWidth, graphHeight } = this.state;
     let classes = ['threshold'];
     classes.push(`color-index-${colorIndex || 'graph-1'}`);
     let commands = '';
 
     if (vertical) {
-      const x = graphValue(value, min, max, width) || 0;
-      commands = `M${x},0 L${x},${height}`;
+      let x = graphValue(value, min, max, graphWidth);
+      if (reverse) {
+        x = graphWidth - x;
+      }
+      commands = `M${x + padding},0 L${x + padding},${height}`;
     } else {
-      const y = (height - graphValue(value, min, max, height)) || 0;
-      commands = `M0,${y} L${width || 1},${y}`;
+      let y = graphValue(value, min, max, graphHeight);
+      if (! reverse) {
+        y = graphHeight - y;
+      }
+      commands = `M0,${y + padding} L${width},${y + padding}`;
     }
 
     return (
       <svg ref="svg" className={classes.join(' ')}
-        viewBox={`0 0 ${width || 1} ${height || 1}`}
+        viewBox={`0 0 ${width} ${height}`}
         preserveAspectRatio="none">
         <path fill="none" d={commands} />
       </svg>
@@ -57,10 +69,12 @@ Threshold.propTypes = {
   colorIndex: PropTypes.string,
   max: PropTypes.number.isRequired,
   min: PropTypes.number,
+  reverse: PropTypes.bool,
   value: PropTypes.number.isRequired,
   vertical: PropTypes.bool
 };
 
 Threshold.defaultProps = {
-  min: 0
+  min: 0,
+  max: 100
 };

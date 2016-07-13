@@ -1,6 +1,9 @@
 // (C) Copyright 2014-2016 Hewlett Packard Enterprise Development LP
 
 import React, { Component, PropTypes } from 'react';
+import { padding, debounceDelay } from './utils';
+
+// Underlying grid lines for rows and/or columns.
 
 export default class Grid extends Component {
 
@@ -24,7 +27,8 @@ export default class Grid extends Component {
   _onResize () {
     // debounce
     clearTimeout(this._resizeTimer);
-    this._resizeTimer = setTimeout(this._layout, 50);
+    // delay should be greater than Chart's delay
+    this._resizeTimer = setTimeout(this._layout, debounceDelay + 10);
   }
 
   _layout () {
@@ -41,30 +45,18 @@ export default class Grid extends Component {
     let commands = '';
 
     if (columns) {
-      const basis =
-        Math.floor(width / (columns.count - (columns.stretch ? 1 : 0)));
-      for (let i=0; i<columns.count; i+=1) {
+      const basis = ((width - (2 * padding)) / (columns - 1));
+      for (let i=0; i<columns; i+=1) {
         let x = i * basis;
-        if ('end' === columns.justify) {
-          x += (basis - 1);
-        } else if ('center' === columns.justify) {
-          x += Math.floor(basis / 2);
-        }
-        commands += `M${x},0 L${x},${height} `;
+        commands += `M${x + padding},${padding} L${x + padding},${height - padding} `;
       }
     }
 
     if (rows) {
-      const basis =
-        Math.floor(height / (rows.count - (rows.stretch ? 1 : 0)));
-      for (let i=0; i<rows.count; i+=1) {
+      const basis = ((height - (2 * padding)) / (rows - 1));
+      for (let i=0; i<rows; i+=1) {
         let y = i * basis;
-        if ('end' === rows.justify) {
-          y += (basis - 1);
-        } else if ('center' === rows.justify) {
-          y += Math.floor(basis / 2);
-        }
-        commands += `M0,${y} L${width},${y} `;
+        commands += `M${padding},${y + padding} L${width - padding},${y + padding} `;
       }
     }
 
@@ -80,14 +72,6 @@ export default class Grid extends Component {
 };
 
 Grid.propTypes = {
-  columns: PropTypes.shape({
-    justify: PropTypes.oneOf(['start', 'center', 'end']),
-    count: PropTypes.number.isRequired,
-    stretch: PropTypes.bool
-  }),
-  rows: PropTypes.shape({
-    justify: PropTypes.oneOf(['start', 'center', 'end']),
-    count: PropTypes.number.isRequired,
-    stretch: PropTypes.bool
-  })
+  columns: PropTypes.number,
+  rows: PropTypes.number
 };

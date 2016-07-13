@@ -7,7 +7,7 @@ export default class Axis extends Component {
 
   constructor (props) {
     super(props);
-    this.state = { size: {} };
+    this.state = { size: { width: 0, height: 0 } };
     this._size = new trackSize(this.props, this._onSize.bind(this));
   }
 
@@ -55,18 +55,24 @@ export default class Axis extends Component {
     }
 
     let graphItems = [];
-    if (values) {
+    if (count) {
+      const delta = (max - min) / (count - 1);
+      for (let value=min; value<=max; value+=delta) {
+        const gValue = graphValue(value, min, max, (vertical ? height : width));
+        let valueItem;
+        if (values) {
+          valueItem = values.filter(item => item.value === value)[0];
+        }
+        if (valueItem) {
+          graphItems.push({ ...valueItem, graphValue: gValue });
+        } else {
+          graphItems.push({ value: value, graphValue: gValue });
+        }
+      }
+    } else if (values) {
       graphItems = values.map((item, index) => ({ ...item,
         graphValue: graphValue(item.value, min, max, (vertical ? height : width))
       }));
-    } else if (count) {
-      const delta = (max - min) / (count - 1);
-      for (let value=min; value<=max; value+=delta) {
-        graphItems.push({
-          value: value,
-          graphValue: graphValue(value, min, max, (vertical ? height : width))
-        });
-      }
     }
     const maxGraphValue = graphValue(max, min, max, (vertical ? height : width));
 
@@ -137,10 +143,6 @@ export default class Axis extends Component {
           className="axis__slot axis__slot--placeholder" style={style} />
       );
     }
-
-    // if (vertical && ! reverse) {
-    //   items.reverse();
-    // }
 
     return (
       <div ref="axis" className={classes.join(' ')} style={style}>

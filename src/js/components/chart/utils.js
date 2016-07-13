@@ -5,9 +5,15 @@ export function graphValue (value, min, max, size) {
   return Math.floor(scale * (value - min));
 };
 
+export var pointSize = 12;
+export var padding = (pointSize / 2) + 2;
+export var debounceDelay = 50;
+
 export class trackSize {
 
   constructor (props, onSize) {
+    this._onResize = this._onResize.bind(this);
+    this._measure = this._measure.bind(this);
     this._width = props.width;
     this._height = props.height;
     this._size = { width: props.width, height: props.height };
@@ -24,7 +30,8 @@ export class trackSize {
   _onResize () {
     // debounce
     clearTimeout(this._resizeTimer);
-    this._resizeTimer = setTimeout(this._measure, 50);
+    // delay should be greater than Chart's delay
+    this._resizeTimer = setTimeout(this._measure, debounceDelay + 10);
   }
 
   size () {

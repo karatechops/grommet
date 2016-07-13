@@ -494,7 +494,9 @@ Meter.propTypes = {
   a11yTitleId: PropTypes.string,
   a11yDescId: PropTypes.string,
   a11yDesc: PropTypes.string,
+  // deprecated in favor of activeIndex?
   important: PropTypes.number,
+  // deprecated, caller can use Legend as needed
   legend: PropTypes.oneOfType([
     PropTypes.bool,
     PropTypes.shape({

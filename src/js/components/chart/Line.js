@@ -5,5 +5,6 @@ import Graph from './Graph';
 export default class Line extends Graph {};
 
 Line.defaultProps = {
+  ...Graph.defaultProps,
   type: 'line'
 };

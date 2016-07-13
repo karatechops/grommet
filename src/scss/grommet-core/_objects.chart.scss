@@ -184,36 +184,16 @@
   display: flex;
 }
 
+.chart--full {
+  width: 100%;
+}
+
 .chart--vertical {
   flex-direction: column;
-
-  &.chart--full {
-    height: 100%;
-  }
-
-  > .axis:first-child {
-    margin-bottom: halve($inuit-base-spacing-unit);
-  }
-
-  > .axis:last-child {
-    margin-top: halve($inuit-base-spacing-unit);
-  }
 }
 
 .chart:not(.chart--vertical) {
   flex-direction: row;
-
-  &.chart--full {
-    width: 100%;
-  }
-
-  > .axis:first-child {
-    margin-right: halve($inuit-base-spacing-unit);
-  }
-
-  > .axis:last-child {
-    margin-left: halve($inuit-base-spacing-unit);
-  }
 }
 
 .base--width-small {
@@ -260,6 +240,10 @@
 
 .axis--vertical {
   flex-direction: column-reverse;
+  // padding-top: round($inuit-base-spacing-unit / 3);
+  // padding-bottom: round($inuit-base-spacing-unit / 3);
+  margin-left: halve($inuit-base-spacing-unit);
+  margin-right: halve($inuit-base-spacing-unit);
 
   .axis__slot {
     min-width: 1em;
@@ -324,6 +308,10 @@
 
 .axis:not(.axis--vertical) {
   flex-direction: row;
+  // padding-left: round($inuit-base-spacing-unit / 3);
+  // padding-right: round($inuit-base-spacing-unit / 3);
+  margin-top: halve($inuit-base-spacing-unit);
+  margin-bottom: halve($inuit-base-spacing-unit);
 
   .axis__slot {
     min-height: $inuit-base-spacing-unit;
@@ -393,7 +381,7 @@
 .grid,
 .graph--line,
 .graph--area,
-.marker {
+.hot-spots {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -417,21 +405,22 @@
   }
 }
 
-// Marker
+// HotSpots
 
-.marker {
+.hot-spots {
   display: flex;
+  width: 100%;
 
   > * {
     flex: 0 0;
   }
 }
 
-.marker--vertical {
+.hot-spots--vertical {
   flex-direction: column;
 }
 
-.marker:not(.marker--vertical) {
+.hot-spots:not(.hot-spots--vertical) {
   flex-direction: row;
 }
 
@@ -453,12 +442,16 @@
 
 .graph--line {
   stroke-width: 3px;
-
   @include graph-stroke-color-translucent(0.7);
 }
 
 .graph--area {
+  stroke-width: 3px;
   @include graph-fill-color-translucent(0.7);
+
+  .graph__point {
+    stroke: $background-color;
+  }
 }
 
 .graph__point {
@@ -468,5 +461,6 @@
 }
 
 .graph__point--active {
+  stroke: $background-color;
   @include graph-fill-color();
 }

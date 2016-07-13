@@ -3,6 +3,8 @@
 import React, { Component, PropTypes, Children } from 'react';
 import Props from '../../utils/Props';
 
+// Equally sized siblings.
+
 export default class Stack extends Component {
 
   render () {

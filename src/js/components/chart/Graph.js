@@ -1,8 +1,7 @@
 // (C) Copyright 2014-2016 Hewlett Packard Enterprise Development LP
 
 import React, { Component, PropTypes } from 'react';
-
-const POINT_RADIUS = 6;
+import { padding, pointSize, debounceDelay } from './utils';
 
 export default class Graph extends Component {
 
@@ -26,15 +25,18 @@ export default class Graph extends Component {
   _onResize () {
     // debounce
     clearTimeout(this._resizeTimer);
-    this._resizeTimer = setTimeout(this._layout, 50);
+    // delay should be greater than Chart's delay
+    this._resizeTimer = setTimeout(this._layout, debounceDelay + 10);
   }
 
   _layout () {
     const { height, width } = this.props;
     const graph = this.refs.graph;
     const rect = graph.getBoundingClientRect();
-    this.setState({ height: height || Math.floor(rect.height) });
-    this.setState({ width: width || Math.floor(rect.width) });
+    this.setState({
+      height: height || Math.floor(rect.height),
+      width: width || Math.floor(rect.width)
+    });
   }
 
   render () {
@@ -55,18 +57,18 @@ export default class Graph extends Component {
     if (vertical) {
       if (! values.length) {
         scale = 1;
-        step = height;
+        step = height - (2 * padding);
       } else {
-        scale = width / (max - min);
-        step = height / (values.length - 1);
+        scale = (width - (2 * padding)) / (max - min);
+        step = (height - (2 * padding)) / (values.length - 1);
       }
     } else {
       if (! values.length) {
         scale = 1;
-        step = width;
+        step = width - (2 * padding);
       } else {
-        scale = height / (max - min);
-        step = width / (values.length - 1);
+        scale = (height - (2 * padding)) / (max - min);
+        step = (width - (2 * padding)) / (values.length - 1);
       }
     }
 
@@ -77,30 +79,25 @@ export default class Graph extends Component {
       let coordinate;
       if (vertical) {
         coordinate = [
-          (value - min) * scale,
-          (reverse ? (index * step) : height - (index * step))
+          ((value - min) * scale) + padding,
+          (reverse ? (index * step) : (height - (2 * padding)) - (index * step)) + padding
         ];
       } else {
         coordinate = [
-          (reverse ? width - (index * step) : index * step),
-          height - ((value - min) * scale)
+          (reverse ? (width - (2 * padding)) - (index * step) : index * step) + padding,
+          ((height - (2 * padding)) - ((value - min) * scale)) + padding
         ];
       }
 
       if ((this.props.points || index === activeIndex) && ! this.props.sparkline) {
-        const classes = ['graph__point', `color-index-${colorIndex}`];
+        const classes = ['graph__point', `color-index-${colorIndex || 'graph-1'}`];
         if (index === activeIndex) {
           classes.push('graph__point--active');
         }
-        let x = Math.max(POINT_RADIUS + 1,
-          Math.min(width - (POINT_RADIUS + 1), coordinate[0]));
-        let y = Math.max(POINT_RADIUS + 1,
-          Math.min(height - (POINT_RADIUS + 1), coordinate[1]));
         points.push(
           <circle key={index} className={classes.join(' ')}
-            cx={x} cy={y} r={POINT_RADIUS} />
+            cx={coordinate[0]} cy={coordinate[1]} r={pointSize / 2} />
         );
-        coordinate = [x, y];
       }
 
       return coordinate;
@@ -116,18 +113,20 @@ export default class Graph extends Component {
           // Close the path by drawing to the left
           // and across to the top of where we started.
           commands +=
-            `L0,${coordinates[coordinates.length - 1][1]} L0,0 Z`;
+            `L${padding},${coordinates[coordinates.length - 1][1]}
+            L${padding},${coordinates[0][1]} Z`;
         } else {
           // Close the path by drawing to the left
           // and across to the bottom of where we started.
           commands +=
-            `L0,${coordinates[coordinates.length - 1][1]} L0,${height} Z`;
+            `L${padding},${coordinates[coordinates.length - 1][1]} L${padding},${height - padding} Z`;
         }
       } else {
         // Close the path by drawing down to the bottom
         // and across to the left of where we started.
         commands +=
-          `L${coordinates[coordinates.length - 1][0]},${height} L0,${height} Z`;
+          `L${coordinates[coordinates.length - 1][0]},${height - padding}
+          L${coordinates[0][0]},${height - padding} Z`;
       }
       pathProps.stroke = 'none';
     } else {
@@ -159,4 +158,9 @@ Graph.propTypes = {
   type: PropTypes.oneOf(['area', 'line']).isRequired,
   vertical: PropTypes.bool,
   width: PropTypes.number
+};
+
+Graph.defaultProps = {
+  min: 0,
+  max: 100
 };
