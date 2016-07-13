@@ -111,5 +111,6 @@ HotSpots.propTypes = {
 };
 
 HotSpots.defaultProps = {
-  min: 0
+  min: 0,
+  max: 100
 };

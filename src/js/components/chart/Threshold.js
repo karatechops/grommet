@@ -9,7 +9,7 @@ export default class Threshold extends Component {
 
   constructor (props) {
     super(props);
-    this.state = { size: { width: 0, height: 0 } };
+    this.state = { size: { width: 0, height: 0 }, graphHeight: 0, graphWidth: 0 };
     this._size = new trackSize(props, this._onSize.bind(this));
   }
 
