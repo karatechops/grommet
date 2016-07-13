@@ -143,7 +143,7 @@ export default class Axis extends Component {
           className="axis__slot axis__slot--placeholder" style={style} />
       );
     }
-    
+
     return (
       <div ref="axis" className={classes.join(' ')} style={style}>
         {items}

@@ -95,10 +95,31 @@ export default class Chart extends Component {
       }
     } else if (base) {
       const rect = base.getBoundingClientRect();
-      this.setState({
-        alignHeight: rect.height,
-        alignTop: rect.top - chartRect.top
-      });
+      alignHeight = rect.height;
+      alignTop = rect.top - chartRect.top;
+      alignBase = true;
+    }
+
+    this.setState({
+      alignWidth: alignWidth,
+      alignLeft: alignLeft,
+      alignHeight: alignHeight,
+      alignTop: alignTop,
+      alignBase: alignBase
+    });
+
+    if (onMaxCount) {
+      let maxCount;
+      if (vertical) {
+        maxCount = Math.floor(alignWidth / (2 * padding));
+      } else {
+        maxCount = Math.floor(alignHeight / (2 * padding));
+      }
+      if (maxCount !== this.state.maxCount) {
+        this.setState({ maxCount: maxCount }, () => {
+          onMaxCount(maxCount);
+        });
+      }
     }
   }
 
