@@ -2,6 +2,9 @@
 
 import React, { Component, PropTypes } from 'react';
 import { padding, debounceDelay } from './utils';
+import CSSClassnames from '../../utils/CSSClassnames';
+
+const CLASS_ROOT = CSSClassnames.CHART_GRID;
 
 // Underlying grid lines for rows and/or columns.
 
@@ -61,7 +64,7 @@ export default class Grid extends Component {
     }
 
     return (
-      <svg ref="grid" className="grid"
+      <svg ref="grid" className={CLASS_ROOT}
         viewBox={`0 0 ${width} ${height}`}
         preserveAspectRatio="none">
         <path fill="none" d={commands} />

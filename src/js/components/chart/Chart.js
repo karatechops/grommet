@@ -2,6 +2,8 @@
 
 import React, { Component, Children, PropTypes } from 'react';
 import { padding, debounceDelay } from './utils';
+import CSSClassnames from '../../utils/CSSClassnames';
+
 import Axis from './Axis';
 import Layers from './Layers';
 import Stack from './Stack';
@@ -11,6 +13,9 @@ import Area from './Area';
 import Line from './Line';
 import Threshold from './Threshold';
 import HotSpots from './HotSpots';
+
+const CLASS_ROOT = CSSClassnames.CHART;
+const CHART_BASE = CSSClassnames.CHART_BASE;
 
 export default class Chart extends Component {
 
@@ -41,7 +46,7 @@ export default class Chart extends Component {
       onMaxCount } = this.props;
     const chart = this.refs.chart;
     const chartRect = chart.getBoundingClientRect();
-    const base = this.refs.chart.querySelector('.base');
+    const base = this.refs.chart.querySelector(`.${CHART_BASE}`);
     let alignWidth, alignLeft, alignTop, alignHeight;
     let alignBase = false;
 
@@ -126,12 +131,12 @@ export default class Chart extends Component {
   render () {
     const { vertical, full } = this.props;
     const { alignHeight, alignLeft, alignTop, alignWidth, alignBase } = this.state;
-    let classes = ['chart'];
+    let classes = [CLASS_ROOT];
     if (vertical) {
-      classes.push('chart--vertical');
+      classes.push(`${CLASS_ROOT}--vertical`);
     }
     if (full) {
-      classes.push('chart--full');
+      classes.push(`${CLASS_ROOT}--full`);
     }
 
     let children = Children.map(this.props.children, child => {

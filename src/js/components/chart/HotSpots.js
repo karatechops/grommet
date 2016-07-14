@@ -2,6 +2,9 @@
 
 import React, { Component, PropTypes } from 'react';
 import { graphValue, trackSize } from './utils';
+import CSSClassnames from '../../utils/CSSClassnames';
+
+const CLASS_ROOT = CSSClassnames.CHART_HOT_SPOTS;
 
 // Interactive regions.
 
@@ -30,15 +33,14 @@ export default class HotSpots extends Component {
   }
 
   render () {
-    const { count, values, max, min, vertical, colorIndex, activeIndex,
+    const { count, values, max, min, vertical, activeIndex,
       onActive } = this.props;
     const { size: { height, width } } = this.state;
 
-    let classes = ['hot-spots'];
+    let classes = [CLASS_ROOT];
     if (vertical) {
-      classes.push('hot-spots--vertical');
+      classes.push(`${CLASS_ROOT}--vertical`);
     }
-    classes.push(`color-index-${colorIndex || 'grey-1'}`);
 
     let graphValues = [];
     if (values) {
@@ -101,7 +103,6 @@ export default class HotSpots extends Component {
 
 HotSpots.propTypes = {
   activeIndex: PropTypes.number,
-  colorIndex: PropTypes.string,
   count: PropTypes.number,
   max: PropTypes.number.isRequired,
   min: PropTypes.number,

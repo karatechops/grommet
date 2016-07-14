@@ -389,42 +389,6 @@
   height: 100%;
 }
 
-// Layers
-
-.#{$grommet-namespace}layers {
-  position: absolute;
-}
-
-.#{$grommet-namespace}layers--height-small {
-  height: $graphic-small-size;
-}
-
-.#{$grommet-namespace}layers--height-medium {
-  height: $graphic-size;
-}
-
-.#{$grommet-namespace}layers--width-small {
-  width: $graphic-small-size;
-}
-
-.#{$grommet-namespace}layers--width-medium {
-  width: $graphic-size;
-}
-
-.#{$grommet-namespace}layers--width-full {
-  width: 100%;
-}
-
-.#{$grommet-namespace}threshold,
-.#{$grommet-namespace}grid,
-.#{$grommet-namespace}graph--line,
-.#{$grommet-namespace}graph--area,
-.#{$grommet-namespace}hot-spots {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-}
-
 // Stack
 
 .#{$grommet-namespace}chart-stack {
@@ -498,17 +462,6 @@
 }
 
 .#{$grommet-namespace}chart-graph__point--active {
-  stroke: $background-color;
-  @include graph-fill-color();
-}
-
-.#{$grommet-namespace}graph__point {
-  fill: $background-color;
-
-  transition: fill $base-animation-duration;
-}
-
-.#{$grommet-namespace}graph__point--active {
   stroke: $background-color;
   @include graph-fill-color();
 }

@@ -2,6 +2,10 @@
 
 import React, { Component, PropTypes } from 'react';
 import { padding, pointSize, debounceDelay } from './utils';
+import CSSClassnames from '../../utils/CSSClassnames';
+
+const CLASS_ROOT = CSSClassnames.CHART_GRAPH;
+const COLOR_INDEX = CSSClassnames.COLOR_INDEX;
 
 export default class Graph extends Component {
 
@@ -44,14 +48,14 @@ export default class Graph extends Component {
       activeIndex } = this.props;
     const { height, width } = this.state;
 
-    let classes = ['graph', `graph--${type}`];
+    let classes = [CLASS_ROOT, `${CLASS_ROOT}--${type}`];
     if (vertical) {
-      classes.push('graph--vertical');
+      classes.push(`${CLASS_ROOT}--vertical`);
     }
     if (highlight) {
-      classes.push('graph--highlight');
+      classes.push(`${CLASS_ROOT}--highlight`);
     }
-    classes.push(`color-index-${colorIndex || 'graph-1'}`);
+    classes.push(`${COLOR_INDEX}-${colorIndex || 'graph-1'}`);
 
     let scale, step;
     if (vertical) {
@@ -80,19 +84,23 @@ export default class Graph extends Component {
       if (vertical) {
         coordinate = [
           ((value - min) * scale) + padding,
-          (reverse ? (index * step) : (height - (2 * padding)) - (index * step)) + padding
+          (reverse ? (index * step) :
+            (height - (2 * padding)) - (index * step)) + padding
         ];
       } else {
         coordinate = [
-          (reverse ? (width - (2 * padding)) - (index * step) : index * step) + padding,
+          (reverse ? (width - (2 * padding)) - (index * step) :
+            index * step) + padding,
           ((height - (2 * padding)) - ((value - min) * scale)) + padding
         ];
       }
 
-      if ((this.props.points || index === activeIndex) && ! this.props.sparkline) {
-        const classes = ['graph__point', `color-index-${colorIndex || 'graph-1'}`];
+      if ((this.props.points || index === activeIndex) &&
+        ! this.props.sparkline) {
+        const classes = [`${CLASS_ROOT}__point`,
+          `${COLOR_INDEX}-${colorIndex || 'graph-1'}`];
         if (index === activeIndex) {
-          classes.push('graph__point--active');
+          classes.push(`${CLASS_ROOT}__point--active`);
         }
         points.push(
           <circle key={index} className={classes.join(' ')}
@@ -119,7 +127,8 @@ export default class Graph extends Component {
           // Close the path by drawing to the left
           // and across to the bottom of where we started.
           commands +=
-            `L${padding},${coordinates[coordinates.length - 1][1]} L${padding},${height - padding} Z`;
+            `L${padding},${coordinates[coordinates.length - 1][1]}
+            L${padding},${height - padding} Z`;
         }
       } else {
         // Close the path by drawing down to the bottom

@@ -2,6 +2,10 @@
 
 import React, { Component, PropTypes } from 'react';
 import { graphValue, trackSize } from './utils';
+import CSSClassnames from '../../utils/CSSClassnames';
+
+const CLASS_ROOT = CSSClassnames.CHART_AXIS;
+const COLOR_INDEX = CSSClassnames.COLOR_INDEX;
 
 export default class Axis extends Component {
 
@@ -32,18 +36,18 @@ export default class Axis extends Component {
       values, count, ticks } = this.props;
     const { size: { height, width } } = this.state;
 
-    let classes = ['axis'];
+    let classes = [CLASS_ROOT];
     if (reverse) {
-      classes.push('axis--reverse');
+      classes.push(`${CLASS_ROOT}--reverse`);
     }
     if (vertical) {
-      classes.push('axis--vertical');
+      classes.push(`${CLASS_ROOT}--vertical`);
     }
     if (align) {
-      classes.push(`axis--align-${align}`);
+      classes.push(`${CLASS_ROOT}--align-${align}`);
     }
     if (ticks) {
-      classes.push('axis--ticks');
+      classes.push(`${CLASS_ROOT}--ticks`);
     }
 
     let style = {...this.props.style};
@@ -80,15 +84,15 @@ export default class Axis extends Component {
     let totalBasis = 0;
     let items = graphItems.map((item, index) => {
 
-      let classes = ['axis__slot'];
+      let classes = [`${CLASS_ROOT}__slot`];
       if (index === highlight) {
-        classes.push('axis__slot--highlight');
+        classes.push(`${CLASS_ROOT}__slot--highlight`);
       }
       if (item.value <= min) {
-        classes.push('axis__slot--zeroed');
+        classes.push(`${CLASS_ROOT}__slot--zeroed`);
       }
       if (item.colorIndex) {
-        classes.push(`color-index-${item.colorIndex}`);
+        classes.push(`${COLOR_INDEX}-${item.colorIndex}`);
       }
       let label = item.label;
       if (typeof contents === 'string' || typeof contents === 'number') {
@@ -140,7 +144,8 @@ export default class Axis extends Component {
       const style = { flexBasis: `${100 - totalBasis}%` };
       items.push(
         <div key={values.length}
-          className="axis__slot axis__slot--placeholder" style={style} />
+          className={`${CLASS_ROOT}__slot ${CLASS_ROOT}__slot--placeholder`}
+          style={style} />
       );
     }
 

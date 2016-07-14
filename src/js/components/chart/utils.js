@@ -16,7 +16,7 @@ export class trackSize {
     this._measure = this._measure.bind(this);
     this._width = props.width;
     this._height = props.height;
-    this._size = { width: props.width, height: props.height };
+    this._size = { width: props.width || 0, height: props.height || 0 };
     this._onSize = onSize;
   }
 

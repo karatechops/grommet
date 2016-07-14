@@ -2,6 +2,9 @@
 
 import React, { Component, PropTypes } from 'react';
 import Props from '../../utils/Props';
+import CSSClassnames from '../../utils/CSSClassnames';
+
+const CLASS_ROOT = CSSClassnames.CHART_BASE;
 
 // Placeholder that reserves space on the screen for Layers to be positioned over.
 
@@ -11,12 +14,12 @@ export default class Base extends Component {
     const { height, width } = this.props;
     const restProps = Props.omit(this.props, Object.keys(Base.propTypes));
 
-    let classes = ['base'];
+    let classes = [CLASS_ROOT];
     if (height) {
-      classes.push(`base--height-${height}`);
+      classes.push(`${CLASS_ROOT}--height-${height}`);
     }
     if (width) {
-      classes.push(`base--width-${width}`);
+      classes.push(`${CLASS_ROOT}--width-${width}`);
     }
 
     return (

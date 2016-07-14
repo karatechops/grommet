@@ -2,6 +2,9 @@
 
 import React, { Component, PropTypes, Children } from 'react';
 import Props from '../../utils/Props';
+import CSSClassnames from '../../utils/CSSClassnames';
+
+const CLASS_ROOT = CSSClassnames.CHART_STACK;
 
 // Equally sized siblings.
 
@@ -11,9 +14,9 @@ export default class Stack extends Component {
     const { height, width, vertical } = this.props;
     const restProps = Props.omit(this.props, Object.keys(Stack.propTypes));
 
-    let classes = ['stack'];
+    let classes = [CLASS_ROOT];
     if (vertical) {
-      classes.push('stack--vertical');
+      classes.push(`${CLASS_ROOT}--vertical`);
     }
 
     let style = {};
@@ -25,6 +28,7 @@ export default class Stack extends Component {
     }
 
     let children = this.props.children;
+    // We can't distribute children when vertical because our height isn't known.
     if (! vertical) {
       const basis = Math.floor(100 / Children.count(this.props.children)) + '%';
       children = Children.map(this.props.children, child => (

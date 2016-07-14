@@ -2,6 +2,10 @@
 
 import React, { Component, PropTypes } from 'react';
 import { graphValue, trackSize, padding } from './utils';
+import CSSClassnames from '../../utils/CSSClassnames';
+
+const CLASS_ROOT = CSSClassnames.CHART_THRESHOLD;
+const COLOR_INDEX = CSSClassnames.COLOR_INDEX;
 
 const DOUBLE_PADDING = 2 * padding;
 
@@ -9,7 +13,11 @@ export default class Threshold extends Component {
 
   constructor (props) {
     super(props);
-    this.state = { size: { width: 0, height: 0 }, graphHeight: 0, graphWidth: 0 };
+    this.state = {
+      size: { width: 0, height: 0 },
+      graphHeight: 0,
+      graphWidth: 0
+    };
     this._size = new trackSize(props, this._onSize.bind(this));
   }
 
@@ -36,8 +44,8 @@ export default class Threshold extends Component {
   render () {
     const { value, max, min, vertical, reverse, colorIndex } = this.props;
     const { size: { height, width }, graphWidth, graphHeight } = this.state;
-    let classes = ['threshold'];
-    classes.push(`color-index-${colorIndex || 'graph-1'}`);
+    let classes = [CLASS_ROOT];
+    classes.push(`${COLOR_INDEX}-${colorIndex || 'graph-1'}`);
     let commands = '';
 
     if (vertical) {
