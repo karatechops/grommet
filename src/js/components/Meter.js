@@ -408,7 +408,7 @@ export default class Meter extends Component {
     } else {
       classes.push(`${CLASS_ROOT}--count-${this.state.series.length}`);
     }
-    if (this.state.activeIndex !== undefined) {
+    if (this.props.active) {
       classes.push(`${CLASS_ROOT}--active`);
     }
     if (this.state.tallLegend) {

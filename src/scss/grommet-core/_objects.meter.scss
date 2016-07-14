@@ -306,16 +306,13 @@ $meter-active-offset: round($inuit-base-spacing-unit * 1.5);
 }
 
 .#{$grommet-namespace}meter--active {
-
   .#{$grommet-namespace}meter__values .#{$grommet-namespace}meter__slice {
     stroke-width: $meter-slice-active-width;
   }
+}
 
-  &:not(.#{$grommet-namespace}meter--single) {
-    .#{$grommet-namespace}meter__values .#{$grommet-namespace}meter__slice.#{$grommet-namespace}meter__slice--active {
-      stroke-width: $meter-slice-active-width;
-    }
-  }
+.#{$grommet-namespace}meter__values .#{$grommet-namespace}meter__slice--active {
+  stroke-width: $meter-slice-active-width;
 }
 
 // BAR
