@@ -4,7 +4,6 @@ import React, { Component, PropTypes } from 'react';
 import classnames from 'classnames';
 import Props from '../utils/Props';
 import CSSClassnames from '../utils/CSSClassnames';
-import Props from '../utils/Props';
 
 const CLASS_ROOT = CSSClassnames.LABEL;
 
