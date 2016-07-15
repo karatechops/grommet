@@ -411,25 +411,6 @@
   height: 100%;
 }
 
-.#{$grommet-namespace}chart-graph--area {
-  &.#{$grommet-namespace}chart-graph--vertical {
-    @include animation('stretch-right-chart 1.5s');
-  }
-
-  &:not(.#{$grommet-namespace}chart-graph--vertical) {
-    bottom: 0;
-    @include animation('stretch-up-chart 1.5s');
-  }
-}
-
-.#{$grommet-namespace}chart-graph__point {
-  @include animation('fade-in-chart 1s');
-}
-
-.#{$grommet-namespace}chart-threshold {
-  @include animation('fade-in-chart 1s');
-}
-
 // Stack
 
 .#{$grommet-namespace}chart-stack {
@@ -479,6 +460,7 @@
 
 .#{$grommet-namespace}chart-threshold {
   @include graph-stroke-color-translucent(0.7);
+  @include animation('fade-in-chart 1s');
 }
 
 // Graph
@@ -492,6 +474,15 @@
   stroke-width: 3px;
   @include graph-fill-color-translucent(0.7);
 
+  &.#{$grommet-namespace}chart-graph--vertical {
+    @include animation('stretch-right-chart 1.5s');
+  }
+
+  &:not(.#{$grommet-namespace}chart-graph--vertical) {
+    bottom: 0;
+    @include animation('stretch-up-chart 1.5s');
+  }
+
   .#{$grommet-namespace}chart-graph__point {
     stroke: $background-color;
   }
@@ -500,6 +491,7 @@
 .#{$grommet-namespace}chart-graph__point {
   fill: $background-color;
   transition: fill $base-animation-duration;
+  @include animation('fade-in-chart 1s');
 }
 
 .#{$grommet-namespace}chart-graph__point--active {
