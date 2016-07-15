@@ -36,7 +36,7 @@ export default class Graph extends Component {
   _layout () {
     const { height, width } = this.props;
     const graph = this.refs.graph;
-    const rect = graph.getBoundingClientRect();
+    const rect = graph.parentNode.getBoundingClientRect();
     this.setState({
       height: height || Math.floor(rect.height),
       width: width || Math.floor(rect.width)
@@ -146,7 +146,9 @@ export default class Graph extends Component {
       <svg ref="graph" className={classes.join(' ')}
         viewBox={`0 0 ${width} ${height}`}
         preserveAspectRatio="none">
-        <path {...pathProps} d={commands} />
+        <g>
+          <path {...pathProps} d={commands} />
+        </g>
         {points}
       </svg>
     );
