@@ -1,0 +1,26 @@
+// (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+
+.#{$grommet-namespace}columns {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+
+  &__column {
+    flex: 0 0 $tile-size;
+    display: flex;
+    flex-direction: column;
+  }
+
+
+  &--small {
+    > .#{$grommet-namespace}columns__column {
+      flex-basis: $tile-small-size;
+    }
+  }
+
+  &--large {
+    > .#{$grommet-namespace}__column {
+      flex-basis: $tile-large-size;
+    }
+  }
+}
