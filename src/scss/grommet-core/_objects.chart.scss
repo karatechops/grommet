@@ -238,6 +238,8 @@
   flex: 0 0;
   display: flex;
   flex-direction: column;
+  // to work around Safari repaint issues
+  -webkit-transform: translateZ(0);
 }
 
 .#{$grommet-namespace}chart-axis--vertical {
@@ -489,12 +491,16 @@
 }
 
 .#{$grommet-namespace}chart-graph__point {
-  fill: $background-color;
-  transition: fill $base-animation-duration;
-  @include animation('fade-in-chart 1s');
+  stroke: none;
+  r: round($inuit-base-spacing-unit / 6);
+  @include graph-fill-color-translucent(0.9);
+  // fill: $background-color;
+  transition: r $base-animation-duration;
+  @include animation('fade-in-chart 0.3s');
 }
 
 .#{$grommet-namespace}chart-graph__point--active {
   stroke: $background-color;
+  r: quarter($inuit-base-spacing-unit);
   @include graph-fill-color();
 }
