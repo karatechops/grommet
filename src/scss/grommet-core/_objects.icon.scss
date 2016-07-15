@@ -87,14 +87,6 @@
     fill: map-get($brand-status-colors, unknown);
   }
 
-  @each $status, $color in $brand-status-colors {
-    &-#{$status} {
-      .#{$grommet-namespace}status-icon__base {
-        fill: $color;
-      }
-    }
-  }
-  
   &-label {
     .#{$grommet-namespace}status-icon__base {
       fill: map-get($brand-status-colors, unknown);
