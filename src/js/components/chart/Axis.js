@@ -11,7 +11,10 @@ export default class Axis extends Component {
 
   constructor (props) {
     super(props);
-    this.state = { size: { width: 0, height: 0 } };
+    this.state = {
+      size: { width: 0, height: 0 },
+      items: this._buildItems(props)
+    };
     this._size = new trackSize(this.props, this._onSize.bind(this));
   }
 
@@ -20,6 +23,7 @@ export default class Axis extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
+    this.setState({ items: this._buildItems(nextProps) });
     this._size.reset(nextProps);
   }
 
@@ -31,10 +35,55 @@ export default class Axis extends Component {
     this.setState({ size: size });
   }
 
+  _buildItems (props) {
+    const { count, values, min, max } = props;
+    let items = [];
+    if (count) {
+      const delta = (max - min) / (count - 1 || 1);
+      for (let index=0; index<=count; index+=1) {
+        const value = delta * index;
+        let item;
+        if (values) {
+          item = values.filter(item => item.value === value)[0];
+        }
+        if (! item) {
+          item = { value: value };
+        }
+        if (0 === index) {
+          item.value = delta / 2;
+          item.flip = true;
+        }
+        items.push(item);
+      }
+    } else if (values && values.length > 0) {
+      if (values[0].value < (min + ((max - min) / 2))) {
+        if (values[0].value > min) {
+          items.push({ value: values[0].value, placeholder: true });
+        }
+        if (values.length > 1) {
+          // take up half of the next item
+          items.push({ ...values[0],
+            value: values[0].value + ((values[1].value - values[0].value) / 2),
+            flip: true
+          });
+          items = items.concat(values.slice(1));
+        } else {
+          items.push({ ...values[0], value: max, flip: true });
+        }
+      } else {
+        items = values.slice(0);
+      }
+      if (items[items.length - 1].value < max) {
+        items.push({ value:max, placeholder: true });
+      }
+    }
+    return items;
+  }
+
   render () {
     const { vertical, reverse, align, min, max, highlight,
-      values, count, ticks } = this.props;
-    const { size: { height, width } } = this.state;
+      ticks } = this.props;
+    const { size: { height, width }, items } = this.state;
 
     let classes = [CLASS_ROOT];
     if (reverse) {
@@ -58,38 +107,23 @@ export default class Axis extends Component {
       style.width = `${width}px`;
     }
 
-    let graphItems = [];
-    if (count) {
-      const delta = (max - min) / (count - 1);
-      for (let value=min; value<=max; value+=delta) {
-        const gValue = graphValue(value, min, max, (vertical ? height : width));
-        let valueItem;
-        if (values) {
-          valueItem = values.filter(item => item.value === value)[0];
-        }
-        if (valueItem) {
-          graphItems.push({ ...valueItem, graphValue: gValue });
-        } else {
-          graphItems.push({ value: value, graphValue: gValue });
-        }
-      }
-    } else if (values) {
-      graphItems = values.map((item, index) => ({ ...item,
-        graphValue: graphValue(item.value, min, max, (vertical ? height : width))
-      }));
-    }
-    const maxGraphValue = graphValue(max, min, max, (vertical ? height : width));
+    const graphItems = items.map(item => ({ ...item,
+      graphValue: graphValue(item.value, min, max, (vertical ? height : width))
+    }));
 
-    let priorItem, borrowedSpace;
-    let totalBasis = 0;
-    let items = graphItems.map((item, index) => {
+    let priorItem; //, borrowedSpace;
+    // let totalBasis = 0;
+    let basisItems = graphItems.map((item, index) => {
 
       let classes = [`${CLASS_ROOT}__slot`];
       if (index === highlight) {
         classes.push(`${CLASS_ROOT}__slot--highlight`);
       }
-      if (item.value <= min) {
-        classes.push(`${CLASS_ROOT}__slot--zeroed`);
+      if (item.flip) {
+        classes.push(`${CLASS_ROOT}__slot--flip`);
+      }
+      if (item.placeholder) {
+        classes.push(`${CLASS_ROOT}__slot--placeholder`);
       }
       if (item.colorIndex) {
         classes.push(`${COLOR_INDEX}-${item.colorIndex}`);
@@ -99,59 +133,21 @@ export default class Axis extends Component {
         label = <span>{label}</span>;
       }
 
-      let delta;
-      if (0 === index) {
-        // first value
-        if (item.value <= min) {
-          if (index < (graphItems.length - 1)) {
-            // need to borrow some space from the next value
-            delta = (graphItems[index+1].graphValue - item.graphValue) / 2;
-            borrowedSpace = true;
-          } else {
-            // first and only value
-            delta = maxGraphValue;
-          }
-        } else {
-          delta = item.graphValue;
-        }
-      } else if (borrowedSpace) {
-        delta = (item.graphValue - priorItem.graphValue) / 2;
-        borrowedSpace = false;
-      } else {
-        delta = (item.graphValue - priorItem.graphValue);
-      }
+      const delta = item.graphValue - (priorItem ? priorItem.graphValue : 0);
+      const basis = (delta / ((vertical ? height : width) || 1)) * 100;
+      const style = { flexBasis: `${basis}%`};
       priorItem = item;
 
-      let basis;
-      if (index > 0 && index === (graphItems.length - 1)) {
-        basis = 100 - totalBasis;
-        totalBasis = 100;
-      } else {
-        basis = (delta / ((vertical ? height : width) || 1)) * 100;
-        totalBasis += basis;
-      }
-      const style = { flexBasis: `${basis}%`};
-
       return (
-        <div key={item.value + index} className={classes.join(' ')} style={style}>
+        <div key={item.value} className={classes.join(' ')} style={style}>
           {label}
         </div>
       );
     });
 
-    if (totalBasis < 100) {
-      // fill remaining space
-      const style = { flexBasis: `${100 - totalBasis}%` };
-      items.push(
-        <div key={values.length}
-          className={`${CLASS_ROOT}__slot ${CLASS_ROOT}__slot--placeholder`}
-          style={style} />
-      );
-    }
-
     return (
       <div ref="axis" className={classes.join(' ')} style={style}>
-        {items}
+        {basisItems}
       </div>
     );
   }

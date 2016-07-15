@@ -251,7 +251,7 @@
     min-width: 1em;
     justify-content: flex-start;
 
-    &.#{$grommet-namespace}chart-axis__slot--zeroed {
+    &.#{$grommet-namespace}chart-axis__slot--flip {
       justify-content: flex-end;
     }
   }
@@ -276,7 +276,7 @@
     .#{$grommet-namespace}chart-axis__slot:not(.#{$grommet-namespace}chart-axis__slot--placeholder) {
       border-top: 1px solid $border-color;
 
-      &.#{$grommet-namespace}chart-axis__slot--zeroed {
+      &.#{$grommet-namespace}chart-axis__slot--flip {
         border-top: none;
         border-bottom: 1px solid $border-color;
       }
@@ -289,7 +289,7 @@
     .#{$grommet-namespace}chart-axis__slot {
       justify-content: flex-end;
 
-      &.#{$grommet-namespace}chart-axis__slot--zeroed {
+      &.#{$grommet-namespace}chart-axis__slot--flip {
         justify-content: flex-start;
       }
     }
@@ -299,7 +299,7 @@
         border-top: none;
         border-bottom: 1px solid $border-color;
 
-        &.#{$grommet-namespace}chart-axis__slot--zeroed {
+        &.#{$grommet-namespace}chart-axis__slot--flip {
           border-bottom: none;
           border-top: 1px solid $border-color;
         }
@@ -319,7 +319,7 @@
     min-height: $inuit-base-spacing-unit;
     align-items: flex-end;
 
-    &.#{$grommet-namespace}chart-axis__slot--zeroed {
+    &.#{$grommet-namespace}chart-axis__slot--flip {
       align-items: flex-start;
     }
   }
@@ -345,7 +345,7 @@
       border-right: 1px solid $border-color;
       padding: 0 quarter($inuit-base-spacing-unit);
 
-      &.#{$grommet-namespace}chart-axis__slot--zeroed {
+      &.#{$grommet-namespace}chart-axis__slot--flip {
         border-right: none;
         border-left: 1px solid $border-color;
       }
