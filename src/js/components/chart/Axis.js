@@ -173,7 +173,7 @@ Axis.propTypes = {
 };
 
 Axis.defaultProps = {
-  align: 'center',
+  align: 'start',
   max: 100,
   min: 0
 };

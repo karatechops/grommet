@@ -30,7 +30,8 @@ export default class Stack extends Component {
     let children = this.props.children;
     // We can't distribute children when vertical because our height isn't known.
     if (! vertical) {
-      const basis = Math.floor(100 / Children.count(this.props.children)) + '%';
+      // Round to hundredths of a % so things line up reasonably accurately
+      const basis = (Math.floor(10000 / Children.count(this.props.children)) / 100.0) + '%';
       children = Children.map(this.props.children, child => (
         child ? React.cloneElement(child, { style: { flexBasis: basis }}) : child
       ));
