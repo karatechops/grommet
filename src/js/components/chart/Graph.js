@@ -99,12 +99,14 @@ export default class Graph extends Component {
         ! this.props.sparkline) {
         const classes = [`${CLASS_ROOT}__point`,
           `${COLOR_INDEX}-${colorIndex || 'graph-1'}`];
+        let radius = pointSize / 3;
         if (index === activeIndex) {
           classes.push(`${CLASS_ROOT}__point--active`);
+          radius = pointSize / 2;
         }
         points.push(
           <circle key={index} className={classes.join(' ')}
-            cx={coordinate[0]} cy={coordinate[1]} r={pointSize / 2} />
+            cx={coordinate[0]} cy={coordinate[1]} r={radius} />
         );
       }
 

@@ -505,7 +505,6 @@
 
 .#{$grommet-namespace}chart-graph__point {
   stroke: none;
-  r: round($inuit-base-spacing-unit / 6);
   @include graph-fill-color-translucent(0.9);
   // fill: $background-color;
   transition: r $base-animation-duration;
@@ -514,7 +513,6 @@
 
 .#{$grommet-namespace}chart-graph__point--active {
   stroke: $background-color;
-  r: quarter($inuit-base-spacing-unit);
   @include graph-fill-color();
 
   #{$dark-background-context} & {
