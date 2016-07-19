@@ -242,6 +242,17 @@
   -webkit-transform: translateZ(0);
 }
 
+.#{$grommet-namespace}chart-axis--ticks {
+  .#{$grommet-namespace}chart-axis__slot {
+    border-color: $border-color;
+    border-width: 1px;
+
+    #{$dark-background-context} & {
+      border-color: $colored-border-color;
+    }
+  }
+}
+
 .#{$grommet-namespace}chart-axis--vertical {
   flex-direction: column-reverse;
   // padding-top: round($inuit-base-spacing-unit / 3);
@@ -276,11 +287,11 @@
 
   &.#{$grommet-namespace}chart-axis--ticks {
     .#{$grommet-namespace}chart-axis__slot:not(.#{$grommet-namespace}chart-axis__slot--placeholder) {
-      border-top: 1px solid $border-color;
+      border-top-style: solid;
 
       &.#{$grommet-namespace}chart-axis__slot--flip {
-        border-top: none;
-        border-bottom: 1px solid $border-color;
+        border-top-style: none;
+        border-bottom-style: solid;
       }
     }
   }
@@ -293,18 +304,6 @@
 
       &.#{$grommet-namespace}chart-axis__slot--flip {
         justify-content: flex-start;
-      }
-    }
-
-    &.#{$grommet-namespace}chart-axis--ticks {
-      .#{$grommet-namespace}chart-axis__slot:not(.#{$grommet-namespace}chart-axis__slot--placeholder) {
-        border-top: none;
-        border-bottom: 1px solid $border-color;
-
-        &.#{$grommet-namespace}chart-axis__slot--flip {
-          border-bottom: none;
-          border-top: 1px solid $border-color;
-        }
       }
     }
   }
@@ -344,12 +343,12 @@
 
   &.#{$grommet-namespace}chart-axis--ticks {
     .#{$grommet-namespace}chart-axis__slot:not(.#{$grommet-namespace}chart-axis__slot--placeholder) {
-      border-right: 1px solid $border-color;
+      border-right-style: solid;
       padding: 0 quarter($inuit-base-spacing-unit);
 
       &.#{$grommet-namespace}chart-axis__slot--flip {
-        border-right: none;
-        border-left: 1px solid $border-color;
+        border-right-style: none;
+        border-left-style: solid;
       }
     }
   }
@@ -456,6 +455,10 @@
 .#{$grommet-namespace}chart-grid {
   path {
     stroke: $border-color;
+
+    #{$dark-background-context} & {
+      stroke: $colored-border-color;
+    }
   }
 }
 
@@ -464,6 +467,10 @@
 .#{$grommet-namespace}chart-threshold {
   @include graph-stroke-color-translucent(0.7);
   @include animation('fade-in-chart 1s');
+
+  #{$dark-background-context} & {
+    @include graph-stroke-color();
+  }
 }
 
 // Graph
@@ -509,4 +516,8 @@
   stroke: $background-color;
   r: quarter($inuit-base-spacing-unit);
   @include graph-fill-color();
+
+  #{$dark-background-context} & {
+    stroke: $colored-active-background-color;
+  }
 }

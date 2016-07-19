@@ -17,6 +17,10 @@
 .#{$grommet-namespace}legend__total {
   color: $secondary-text-color;
 
+  #{$dark-background-context} & {
+    color: $inactive-colored-text-color;
+  }
+
   // > * {
   //   vertical-align: top;
   // }
