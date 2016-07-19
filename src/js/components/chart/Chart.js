@@ -11,6 +11,7 @@ import Base from './Base';
 import Grid from './Grid';
 import Area from './Area';
 import Line from './Line';
+import Bar from './Bar';
 import Threshold from './Threshold';
 import HotSpots from './HotSpots';
 
@@ -28,8 +29,8 @@ export default class Chart extends Component {
 
   componentDidMount () {
     window.addEventListener('resize', this._onResize);
-    this._onResize();
-    // setTimeout(this._layout, 1);
+    // this._onResize();
+    setTimeout(this._layout, 1);
     // setTimeout(this._layout, 100);
   }
 
@@ -163,4 +164,4 @@ Chart.propTypes = {
   width: PropTypes.number
 };
 
-export { Axis, Layers, Stack, Base, Grid, Area, Line, Threshold, HotSpots };
+export { Axis, Layers, Stack, Base, Grid, Area, Line, Bar, Threshold, HotSpots };

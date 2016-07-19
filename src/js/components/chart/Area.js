@@ -8,3 +8,5 @@ Area.defaultProps = {
   ...Graph.defaultProps,
   type: 'area'
 };
+
+Area.displayName = 'Area';

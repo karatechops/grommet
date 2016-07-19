@@ -111,34 +111,44 @@ export default class Graph extends Component {
       return coordinate;
     });
 
-    // Build the commands for this set of coordinates.
-    let commands = `M${coordinates.map(c => c.join(',')).join(' L')}`;
-
     let pathProps = {};
-    if ('area' === type) {
-      if (vertical) {
-        if (reverse) {
-          // Close the path by drawing to the left
-          // and across to the top of where we started.
-          commands +=
-            `L${padding},${coordinates[coordinates.length - 1][1]}
-            L${padding},${coordinates[0][1]} Z`;
+    let commands;
+
+    // Build the commands for this set of coordinates.
+
+    if ('area' === type || 'line' === type) {
+      commands = `M${coordinates.map(c => c.join(',')).join(' L')}`;
+
+      if ('area' === type) {
+        if (vertical) {
+          if (reverse) {
+            // Close the path by drawing to the left
+            // and across to the top of where we started.
+            commands +=
+              `L${padding},${coordinates[coordinates.length - 1][1]}
+              L${padding},${coordinates[0][1]} Z`;
+          } else {
+            // Close the path by drawing to the left
+            // and across to the bottom of where we started.
+            commands +=
+              `L${padding},${coordinates[coordinates.length - 1][1]}
+              L${padding},${height - padding} Z`;
+          }
         } else {
-          // Close the path by drawing to the left
-          // and across to the bottom of where we started.
+          // Close the path by drawing down to the bottom
+          // and across to the left of where we started.
           commands +=
-            `L${padding},${coordinates[coordinates.length - 1][1]}
-            L${padding},${height - padding} Z`;
+            `L${coordinates[coordinates.length - 1][0]},${height - padding}
+            L${coordinates[0][0]},${height - padding} Z`;
         }
+        pathProps.stroke = 'none';
       } else {
-        // Close the path by drawing down to the bottom
-        // and across to the left of where we started.
-        commands +=
-          `L${coordinates[coordinates.length - 1][0]},${height - padding}
-          L${coordinates[0][0]},${height - padding} Z`;
+        pathProps.fill = 'none';
       }
-      pathProps.stroke = 'none';
-    } else {
+    } else if ('bar' === type) {
+      commands = coordinates.map(c => (
+        `M${c.join(',')}L${vertical ? `${padding},${c[1]}` : `${c[0]},${height - padding}`}`
+      )).join(' ');
       pathProps.fill = 'none';
     }
 
@@ -166,7 +176,7 @@ Graph.propTypes = {
   points: PropTypes.bool,
   reverse: PropTypes.bool,
   values: PropTypes.arrayOf(PropTypes.number).isRequired,
-  type: PropTypes.oneOf(['area', 'line']).isRequired,
+  type: PropTypes.oneOf(['area', 'line', 'bar']).isRequired,
   vertical: PropTypes.bool,
   width: PropTypes.number
 };

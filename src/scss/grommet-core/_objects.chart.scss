@@ -406,6 +406,7 @@
 .#{$grommet-namespace}chart-grid,
 .#{$grommet-namespace}chart-graph--line,
 .#{$grommet-namespace}chart-graph--area,
+.#{$grommet-namespace}chart-graph--bar,
 .#{$grommet-namespace}chart-hot-spots {
   position: absolute;
   left: 0;
@@ -469,6 +470,11 @@
 
 .#{$grommet-namespace}chart-graph--line {
   stroke-width: 3px;
+  @include graph-stroke-color-translucent(0.7);
+}
+
+.#{$grommet-namespace}chart-graph--bar {
+  stroke-width: 4px;
   @include graph-stroke-color-translucent(0.7);
 }
 

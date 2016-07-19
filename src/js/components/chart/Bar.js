@@ -2,11 +2,11 @@
 
 import Graph from './Graph';
 
-export default class Line extends Graph {};
+export default class Bar extends Graph {};
 
-Line.defaultProps = {
+Bar.defaultProps = {
   ...Graph.defaultProps,
-  type: 'line'
+  type: 'bar'
 };
 
-Line.displayName = 'Line';
+Bar.displayName = 'Bar';
