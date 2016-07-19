@@ -28,7 +28,9 @@ export default class Chart extends Component {
 
   componentDidMount () {
     window.addEventListener('resize', this._onResize);
-    setTimeout(this._layout, 1);
+    this._onResize();
+    // setTimeout(this._layout, 1);
+    // setTimeout(this._layout, 100);
   }
 
   componentWillUnmount () {
@@ -116,6 +118,7 @@ export default class Chart extends Component {
 
       // name comparison is to work around webpack alias issues in development
       if (child.type === Axis || child.type.name === 'Axis') {
+
         if (vertical) {
           child = React.cloneElement(child, {
             width: alignBase ? alignWidth - (2 * padding) : alignWidth,
@@ -129,11 +132,13 @@ export default class Chart extends Component {
         }
 
       } else if (child.type === Layers || child.type.name === 'Layers') {
+
         child = React.cloneElement(child, {
           height: alignHeight,
           width: alignWidth,
           style: { left: alignLeft, top: alignTop }
         });
+
       }
 
       return child;

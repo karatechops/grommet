@@ -100,10 +100,10 @@ export default class Axis extends Component {
     }
 
     let style = {...this.props.style};
-    if (height) {
+    if (vertical && height) {
       style.height = `${height}px`;
     }
-    if (width) {
+    if (! vertical && width) {
       style.width = `${width}px`;
     }
 
@@ -111,8 +111,7 @@ export default class Axis extends Component {
       graphValue: graphValue(item.value, min, max, (vertical ? height : width))
     }));
 
-    let priorItem; //, borrowedSpace;
-    // let totalBasis = 0;
+    let priorItem;
     let basisItems = graphItems.map((item, index) => {
 
       let classes = [`${CLASS_ROOT}__slot`];
