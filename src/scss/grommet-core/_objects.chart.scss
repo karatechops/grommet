@@ -359,7 +359,7 @@
 
 .#{$grommet-namespace}chart-layers {
   position: absolute;
-  @include animation('fade-in-chart 0.3s');
+  @include animation('fade-in-chart 0.5s');
 }
 
 .#{$grommet-namespace}chart-layers--height-small {
