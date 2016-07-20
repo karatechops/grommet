@@ -450,6 +450,10 @@
   flex-direction: row;
 }
 
+.#{$grommet-namespace}chart-hot-spots--clickable {
+  cursor: pointer;
+}
+
 // Grid
 
 .#{$grommet-namespace}chart-grid {
@@ -465,6 +469,7 @@
 // Threshold
 
 .#{$grommet-namespace}chart-threshold {
+  stroke: $border-color;
   @include graph-stroke-color-translucent(0.7);
   @include animation('fade-in-chart 1s');
 

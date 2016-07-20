@@ -45,7 +45,9 @@ export default class Threshold extends Component {
     const { value, max, min, vertical, reverse, colorIndex } = this.props;
     const { size: { height, width }, graphWidth, graphHeight } = this.state;
     let classes = [CLASS_ROOT];
-    classes.push(`${COLOR_INDEX}-${colorIndex || 'graph-1'}`);
+    if (colorIndex) {
+      classes.push(`${COLOR_INDEX}-${colorIndex}`);
+    }
     let commands = '';
 
     if (vertical) {

@@ -19,7 +19,11 @@ export default class Layers extends Component {
     }
 
     let children = Children.map(this.props.children, child => {
-      return React.cloneElement(child, { width: width, height: height });
+      if (child) {
+        return React.cloneElement(child, { width: width, height: height });
+      } else {
+        return child;
+      }
     });
 
     return (

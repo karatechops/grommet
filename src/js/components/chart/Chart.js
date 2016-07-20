@@ -118,7 +118,7 @@ export default class Chart extends Component {
     let children = Children.map(this.props.children, child => {
 
       // name comparison is to work around webpack alias issues in development
-      if (child.type === Axis || child.type.name === 'Axis') {
+      if (child && (child.type === Axis || child.type.name === 'Axis')) {
 
         if (vertical) {
           child = React.cloneElement(child, {
@@ -132,7 +132,7 @@ export default class Chart extends Component {
           });
         }
 
-      } else if (child.type === Layers || child.type.name === 'Layers') {
+      } else if (child && (child.type === Layers || child.type.name === 'Layers')) {
 
         child = React.cloneElement(child, {
           height: alignHeight,
@@ -156,12 +156,10 @@ export default class Chart extends Component {
 
 Chart.propTypes = {
   full: PropTypes.bool,
-  height: PropTypes.number,
   horizontalAlignWith: PropTypes.string,
   onMaxCount: PropTypes.func,
   vertical: PropTypes.bool,
-  verticalAlignWith: PropTypes.string,
-  width: PropTypes.number
+  verticalAlignWith: PropTypes.string
 };
 
 export { Axis, Layers, Stack, Base, Grid, Area, Line, Bar, Threshold, HotSpots };

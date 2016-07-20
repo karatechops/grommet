@@ -11,11 +11,14 @@ const CLASS_ROOT = CSSClassnames.CHART_HOT_SPOTS;
 export default class HotSpots extends Component {
 
   render () {
-    const { count, vertical, activeIndex, onActive } = this.props;
+    const { count, vertical, activeIndex, onActive, onClick } = this.props;
 
     let classes = [CLASS_ROOT];
     if (vertical) {
       classes.push(`${CLASS_ROOT}--vertical`);
+    }
+    if (onClick) {
+      classes.push(`${CLASS_ROOT}--clickable`);
     }
 
     const defaultBasis = 100 / (count - 1);
@@ -34,8 +37,9 @@ export default class HotSpots extends Component {
       const style = { flexBasis: `${basis}%`};
       items.push(
         <div key={index} className={classes.join(' ')} style={style}
-          onMouseOver={() => onActive(index)}
-          onMouseOut={() => onActive(undefined)} />
+          onMouseOver={onActive ? () => onActive(index) : undefined}
+          onMouseOut={onActive ? () => onActive(undefined) : undefined}
+          onClick={onClick ? () => onClick(index) : undefined} />
       );
     }
 
@@ -52,13 +56,7 @@ export default class HotSpots extends Component {
 HotSpots.propTypes = {
   activeIndex: PropTypes.number,
   count: PropTypes.number,
-  max: PropTypes.number.isRequired,
-  min: PropTypes.number,
   onActive: PropTypes.func,
+  onClick: PropTypes.func,
   vertical: PropTypes.bool
-};
-
-HotSpots.defaultProps = {
-  min: 0,
-  max: 100
 };

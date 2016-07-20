@@ -35,3 +35,8 @@ Base.propTypes = {
   height: PropTypes.oneOf(['small', 'medium', 'large']),
   width: PropTypes.oneOf(['small', 'medium', 'large', 'full'])
 };
+
+Base.defaultProps = {
+  height: 'medium',
+  width: 'medium'
+};
