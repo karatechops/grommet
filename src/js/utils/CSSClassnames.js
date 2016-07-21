@@ -20,6 +20,7 @@ export default {
   CHART_GRID: `${namespace}chart-grid`,
   CHART_HOT_SPOTS: `${namespace}chart-hot-spots`,
   CHART_LAYERS: `${namespace}chart-layers`,
+  CHART_RANGE: `${namespace}chart-range`,
   CHART_STACK: `${namespace}chart-stack`,
   CHART_THRESHOLD: `${namespace}chart-threshold`,
   CHECK_BOX: `${namespace}check-box`,

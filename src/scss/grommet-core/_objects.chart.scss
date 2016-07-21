@@ -412,6 +412,7 @@
 .#{$grommet-namespace}chart-graph--area,
 .#{$grommet-namespace}chart-graph--bar,
 .#{$grommet-namespace}chart-hot-spots,
+.#{$grommet-namespace}chart-range,
 .#{$grommet-namespace}chart-loading {
   position: absolute;
   left: 0;
@@ -468,6 +469,61 @@
 
 .#{$grommet-namespace}chart-hot-spots--clickable {
   cursor: pointer;
+}
+
+// Range
+
+.#{$grommet-namespace}chart-range {
+  cursor: pointer;
+}
+
+.#{$grommet-namespace}chart-range__active {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: rgba($brand-color-lighter, 0.4);
+}
+
+.#{$grommet-namespace}chart-range--vertical {
+  .#{$grommet-namespace}chart-range__active {
+    flex-direction: column;
+  }
+}
+
+.#{$grommet-namespace}chart-range__active-start,
+.#{$grommet-namespace}chart-range__active-end {
+  flex: 0 0 $inuit-base-spacing-unit;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: rgba($brand-color-lighter, 0.3);
+
+  &:hover {
+    background-color: rgba($brand-color-lighter, 0.8);
+  }
+
+  svg {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+}
+
+.#{$grommet-namespace}chart-range--vertical {
+  .#{$grommet-namespace}chart-range__active {
+    flex-direction: column;
+  }
+
+  .#{$grommet-namespace}chart-range__active-start,
+  .#{$grommet-namespace}chart-range__active-end {
+    flex-direction: row;
+  }
+
+  svg {
+    transform: rotate(90deg);
+  }
 }
 
 // Grid

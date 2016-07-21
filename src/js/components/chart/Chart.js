@@ -14,6 +14,7 @@ import Line from './Line';
 import Bar from './Bar';
 import Threshold from './Threshold';
 import HotSpots from './HotSpots';
+import Range from './Range';
 
 const CLASS_ROOT = CSSClassnames.CHART;
 const CHART_BASE = CSSClassnames.CHART_BASE;
@@ -178,4 +179,5 @@ Chart.propTypes = {
   verticalAlignWith: PropTypes.string
 };
 
-export { Axis, Layers, Stack, Base, Grid, Area, Line, Bar, Threshold, HotSpots };
+export { Axis, Layers, Stack, Base, Grid, Area, Line, Bar, Threshold,
+  HotSpots, Range };

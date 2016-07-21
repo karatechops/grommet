@@ -27,9 +27,9 @@ export default class HotSpots extends Component {
     const defaultBasis = 100 / (count - 1);
     let items = [];
     for (let index=0; index<count; index+=1) {
-      let classes = ['hot-spots__band'];
+      let classes = [`${CLASS_ROOT}__band`];
       if (index === activeIndex) {
-        classes.push('hot-spots__band--active');
+        classes.push(`${CLASS_ROOT}__band--active`);
       }
       let basis;
       if (0 === index || index === (count - 1)) {
