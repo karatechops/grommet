@@ -120,6 +120,9 @@ export default class Legend extends Component {
 
     var total;
     if (this.props.total && this.props.series.length > 1) {
+      if (true !== this.props.total) {
+        totalValue = this.props.total;
+      }
       total = (
         <li className={CLASS_ROOT + "__total"}>
           <span className={CLASS_ROOT + "__total-label"}>
@@ -159,7 +162,10 @@ Legend.propTypes = {
     ]),
     onClick: PropTypes.func
   })).isRequired,
-  total: PropTypes.bool,
+  total: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.node
+  ]),
   units: PropTypes.string,
   value: PropTypes.number
 };

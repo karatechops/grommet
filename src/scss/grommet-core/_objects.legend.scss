@@ -108,17 +108,18 @@
 
 // need li to override .grommet li
 li.#{$grommet-namespace}legend__total {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
   margin-left: $inuit-base-spacing-unit;
+  margin-top: quarter($inuit-base-spacing-unit);
+  padding-top: quarter($inuit-base-spacing-unit);
+  border-top: 1px dotted $border-color;
 
   html.rtl & {
     margin-left: 0;
     margin-right: $inuit-base-spacing-unit;
-  }
-
-  > * {
-    margin-top: quarter($inuit-base-spacing-unit);
-    padding-top: quarter($inuit-base-spacing-unit);
-    border-top: 1px dotted $border-color;
   }
 }
 
