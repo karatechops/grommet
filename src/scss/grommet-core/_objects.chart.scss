@@ -226,6 +226,11 @@
   height: $graphic-large-size;
 }
 
+.#{$grommet-namespace}chart-base--height-sparkline {
+  height: $sparkline-height;
+  width: $sparkline-height * 4;
+}
+
 // Axis
 
 .#{$grommet-namespace}chart-axis {
@@ -406,11 +411,22 @@
 .#{$grommet-namespace}chart-graph--line,
 .#{$grommet-namespace}chart-graph--area,
 .#{$grommet-namespace}chart-graph--bar,
-.#{$grommet-namespace}chart-hot-spots {
+.#{$grommet-namespace}chart-hot-spots,
+.#{$grommet-namespace}chart-loading {
   position: absolute;
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+// Loading
+
+.#{$grommet-namespace}chart-loading {
+  top: 0;
+  stroke-width: $inuit-base-spacing-unit;
+  stroke: $unset-color;
+  stroke-dasharray: 1 $inuit-base-spacing-unit;
+  stroke-dashoffset: 0;
 }
 
 // Stack

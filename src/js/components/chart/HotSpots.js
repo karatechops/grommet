@@ -20,6 +20,9 @@ export default class HotSpots extends Component {
     if (onClick) {
       classes.push(`${CLASS_ROOT}--clickable`);
     }
+    if (this.props.className) {
+      classes.push(this.props.className);
+    }
 
     const defaultBasis = 100 / (count - 1);
     let items = [];

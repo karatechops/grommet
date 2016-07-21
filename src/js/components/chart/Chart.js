@@ -105,7 +105,7 @@ export default class Chart extends Component {
   }
 
   render () {
-    const { vertical, full } = this.props;
+    const { vertical, full, loading } = this.props;
     const { alignHeight, alignLeft, alignTop, alignWidth, alignBase } = this.state;
     let classes = [CLASS_ROOT];
     if (vertical) {
@@ -113,6 +113,12 @@ export default class Chart extends Component {
     }
     if (full) {
       classes.push(`${CLASS_ROOT}--full`);
+    }
+    if (loading) {
+      classes.push(`${CLASS_ROOT}--loading`);
+    }
+    if (this.props.className) {
+      classes.push(this.props.className);
     }
 
     let children = Children.map(this.props.children, child => {
@@ -145,6 +151,15 @@ export default class Chart extends Component {
       return child;
     });
 
+    if (loading) {
+      children.push(
+        <svg key="loading" className={`${CLASS_ROOT}-loading`}
+          viewBox={`0 0 ${alignWidth} ${alignHeight}`}>
+          <path d={`M0,${alignHeight / 2} L${alignWidth},${alignHeight / 2}`} />
+        </svg>
+      );
+    }
+
     return (
       <div ref="chart" className={classes.join(' ')}>
         {children}
@@ -157,6 +172,7 @@ export default class Chart extends Component {
 Chart.propTypes = {
   full: PropTypes.bool,
   horizontalAlignWith: PropTypes.string,
+  loading: PropTypes.bool,
   onMaxCount: PropTypes.func,
   vertical: PropTypes.bool,
   verticalAlignWith: PropTypes.string

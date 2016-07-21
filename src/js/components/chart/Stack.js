@@ -18,6 +18,9 @@ export default class Stack extends Component {
     if (vertical) {
       classes.push(`${CLASS_ROOT}--vertical`);
     }
+    if (this.props.className) {
+      classes.push(this.props.className);
+    }
 
     let style = {};
     if (height) {

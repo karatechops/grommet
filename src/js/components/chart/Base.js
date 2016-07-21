@@ -21,6 +21,9 @@ export default class Base extends Component {
     if (width) {
       classes.push(`${CLASS_ROOT}--width-${width}`);
     }
+    if (this.props.className) {
+      classes.push(this.props.className);
+    }
 
     return (
       <div {...restProps} className={classes.join(' ')}>
@@ -32,7 +35,7 @@ export default class Base extends Component {
 };
 
 Base.propTypes = {
-  height: PropTypes.oneOf(['small', 'medium', 'large']),
+  height: PropTypes.oneOf(['small', 'medium', 'large', 'sparkline']),
   width: PropTypes.oneOf(['small', 'medium', 'large', 'full'])
 };
 

@@ -98,6 +98,9 @@ export default class Axis extends Component {
     if (ticks) {
       classes.push(`${CLASS_ROOT}--ticks`);
     }
+    if (this.props.className) {
+      classes.push(this.props.className);
+    }
 
     let style = {...this.props.style};
     if (vertical && height) {

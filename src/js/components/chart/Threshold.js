@@ -48,6 +48,9 @@ export default class Threshold extends Component {
     if (colorIndex) {
       classes.push(`${COLOR_INDEX}-${colorIndex}`);
     }
+    if (this.props.className) {
+      classes.push(this.props.className);
+    }
     let commands = '';
 
     if (vertical) {
