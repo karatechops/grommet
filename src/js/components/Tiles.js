@@ -44,6 +44,7 @@ export default class Tiles extends Component {
       activeTile: undefined,
       mouseActive: false,
       overflow: false,
+      scrollWidth: 0,
       selected: Selection.normalizeIndexes(props.selected)
     };
   }
@@ -271,16 +272,31 @@ export default class Tiles extends Component {
 
   _layout () {
     const { direction } = this.props;
+
     if ('row' === direction) {
       // determine if we have more tiles than room to fit
       const tiles = findDOMNode(this.tilesRef);
+
       // 20 is to allow some fuzziness as scrollbars come and go
-      this.setState({
+      const newState = {
         overflow: (tiles.scrollWidth > (tiles.offsetWidth + 20)),
         overflowStart: (tiles.scrollLeft <= 20),
-        overflowEnd:
-          (tiles.scrollLeft >= (tiles.scrollWidth - tiles.offsetWidth))
-      });
+        overflowEnd: 
+          (tiles.scrollLeft >= (tiles.scrollWidth - tiles.offsetWidth)),
+        scrollWidth: tiles.scrollWidth
+      };
+
+      const state = {
+        overflow: this.state.overflow,
+        overflowStart: this.state.overflowStart,
+        overflowEnd: this.state.overflowEnd,
+        scrollWidth: this.state.scrollWidth
+      };
+
+      // Shallow compare states.
+      if (JSON.stringify(newState) !== JSON.stringify(state)) {
+        this.setState({ ...newState });
+      }
 
       // mark any tiles that might be clipped
       const rect = tiles.getBoundingClientRect();
@@ -461,14 +477,16 @@ export default class Tiles extends Component {
       let right;
 
       if (!overflowStart) {
-        const previousTilesMessage = Intl.getMessage(intl, 'Previous Tiles');
+        //const previousTilesMessage = Intl.getMessage(intl, 'Previous Tiles');
+        const previousTilesMessage = 'previous';
         left = (
           <Button className={`${CLASS_ROOT}__left`} icon={<LinkPreviousIcon />}
             a11yTitle={previousTilesMessage} onClick={this._onLeft} />
         );
       }
       if (!overflowEnd) {
-        const nextTilesMessage = Intl.getMessage(intl, 'Next Tiles');
+        //const nextTilesMessage = Intl.getMessage(intl, 'Next Tiles');
+        const nextTilesMessage = 'next';
         right = (
           <Button className={`${CLASS_ROOT}__right`} icon={<LinkNextIcon />}
             a11yTitle={nextTilesMessage} onClick={this._onRight} />
